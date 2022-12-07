@@ -53,8 +53,10 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
+  password      String 
   accounts      Account[]
   sessions      Session[]
+  ownedCollections Collection[]
 }
 
 model VerificationToken {
@@ -63,4 +65,23 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model File{
+  id String @id @default(cuid())
+  name String
+  dateAdded DateTime
+  collectionId String
+  collection Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+
+}
+
+model Collection{
+  id String @id @default(cuid())
+  name String
+  files File[]
+  dateCreated DateTime @default(now())
+  dateUpdated DateTime @updatedAt
+  ownerId String
+  owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 }

@@ -24,7 +24,7 @@ export const publicProcedure = t.procedure;
 const isAuthed = t.middleware(({ ctx, next }) => {
   if (!ctx.session || !ctx.session.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
-  }
+   }
   return next({
     ctx: {
       // infers the `session` as non-nullable
