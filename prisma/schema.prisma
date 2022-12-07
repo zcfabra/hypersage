@@ -70,7 +70,10 @@ model VerificationToken {
 model File{
   id String @id @default(cuid())
   name String
-  dateAdded DateTime
+  dateAdded DateTime @default(now())
+  text String
+  type String
+  size Int 
   collectionId String
   collection Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
 
@@ -80,6 +83,7 @@ model Collection{
   id String @id @default(cuid())
   name String
   files File[]
+  numFiles Int
   dateCreated DateTime @default(now())
   dateUpdated DateTime @updatedAt
   ownerId String

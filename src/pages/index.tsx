@@ -11,6 +11,9 @@ const Home: NextPage = () => {
 
   const router = useRouter();
   const amIAuthed = trpc.auth.getSession.useQuery();
+  if (amIAuthed.data?.user){
+    router.push("/dashboard")
+  }
   return (
     <>
       <div className="w-full h-screen bg-white text-black flex flex-col items-center pt-16">
