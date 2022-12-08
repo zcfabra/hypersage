@@ -8,6 +8,7 @@ import {BsLightningCharge as Tasks} from "react-icons/bs"
 import FilesView from '../../components/FilesView'
 import { FileContainer } from '../upload'
 import DocViewer from '../../components/DocViewer'
+import SearchView from '../../components/SearchView'
 
 
 const Collection: NextPage = () => {
@@ -50,6 +51,8 @@ const Collection: NextPage = () => {
                 switch (tab) {
                   case "Files":
                     return <FilesView collectionID={data.id} triggerRefetch={triggerRefetch}setDocInViewer={setDocInViewer} data={data.files}/>;
+                  case "Search":
+                    return <SearchView collectionID={data.id} data={data.files}setDocInViewer={setDocInViewer} />
                 }
             })()}
       </div>

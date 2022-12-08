@@ -11,6 +11,9 @@ const Signup = () => {
     onError(err){
       let unpackErr = JSON.parse(err.message);
       console.log("ERR HERE:",unpackErr)
+    },
+    onSuccess(){
+      router.push("/login");
     }
   })
   return (

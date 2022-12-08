@@ -27,7 +27,7 @@ const Login =  () => {
                         <Field placeholder="Email" className="rounded-md shadow-inner px-4 my-2 w-full bg-gray-100 h-12" type="email" name="email"></Field>
                         <Field placeholder="Password" className="rounded-md shadow-inner px-4 my-2 w-full bg-gray-100 h-12" type="password" name="password"></Field>
                         </div>
-                        <button className='w-32 h-12 rounded-md bg-pink-500 text-white' type='submit'>Login</button>
+                        <button className='w-32 h-16 rounded-md bg-gradient-to-r from-pink-500 to-orange-500 text-white' type='submit'>Login</button>
                     </Form>
                 )}</Formik>
             </div>
