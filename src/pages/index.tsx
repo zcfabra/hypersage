@@ -27,8 +27,12 @@ const Home: NextPage = () => {
         <h1>Welcome back {amIAuthed.data.user?.email}</h1>
         </>)
         :
-        (<><h1 className="text-black text-9xl font-bold">Hypersage</h1>
-        <button onClick={()=>router.push("/signup")} className=" mt-24 w-32 h-16 bg-gradient-to-r from-pink-500 to-orange-500 text-white rounded-md text-lg">Sign Up</button></>)}
+        (<>
+        <div className="w-10/12 h-4/6 flex flex-col items-center">
+          <h1 className="text-black text-9xl font-bold">Hypersage</h1>
+          <button onClick={()=>router.push("/signup")} className="mt-auto w-32 h-16 bg-gradient-to-r from-pink-500 to-orange-500 text-white rounded-md text-lg">Sign Up</button>
+        </div>
+          </>)}
         
       
       </div>

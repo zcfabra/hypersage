@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react'
 import { getServerAuthSession } from '../../server/common/get-server-auth-session';
-import { router } from '../../server/trpc/trpc';
 import { trpc } from '../../utils/trpc'
 
 const Dashboard: NextPage = () => {

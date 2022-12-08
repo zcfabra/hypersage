@@ -118,7 +118,26 @@ export const collectionsRouter = router({
         }
 
 
-    )
+    ),
+
+    fullTextSearchInCollection: protectedProcedure.input(z.object({collectionID:z.string(), query: z.string()})).query(async({ctx, input})=>{
+        const res = await ctx.prisma.file.findMany({
+            where: {
+                collectionId: input.collectionID,
+                text: {
+                    search: input.query
+                }
+            }
+        });
+
+        if (!res){
+            return null;
+        }
+
+        console.log(res);
+
+        return res;
+    })
 
       
 

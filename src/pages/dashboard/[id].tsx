@@ -9,6 +9,7 @@ import FilesView from '../../components/FilesView'
 import { FileContainer } from '../upload'
 import DocViewer from '../../components/DocViewer'
 import SearchView from '../../components/SearchView'
+import TasksViewer from '../../components/TasksViewer'
 
 
 const Collection: NextPage = () => {
@@ -52,7 +53,9 @@ const Collection: NextPage = () => {
                   case "Files":
                     return <FilesView collectionID={data.id} triggerRefetch={triggerRefetch}setDocInViewer={setDocInViewer} data={data.files}/>;
                   case "Search":
-                    return <SearchView collectionID={data.id} data={data.files}setDocInViewer={setDocInViewer} />
+                    return <SearchView collectionID={data.id} data={data.files}setDocInViewer={setDocInViewer} />;
+                  case "Tasks":
+                    return <TasksViewer/>
                 }
             })()}
       </div>

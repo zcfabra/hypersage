@@ -3,10 +3,11 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   // NOTE: When using postgresql, mysql or sqlserver, uncomment the @db.Text annotations in model Account below
   // Further reading:
   // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
@@ -57,6 +58,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   ownedCollections Collection[]
+
 }
 
 model VerificationToken {
@@ -88,4 +90,13 @@ model Collection{
   dateUpdated DateTime @updatedAt
   ownerId String
   owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  tasks Task[]
+}
+
+
+model Task{
+  id String @id @default(cuid())
+  name String
+  collectionID String
+  collection Collection @relation(fields: [collectionID], references: [id], onDelete: Cascade)
 }
