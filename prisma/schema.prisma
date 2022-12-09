@@ -97,6 +97,8 @@ model Collection{
 model Task{
   id String @id @default(cuid())
   name String
+  type String
+  filesToInclude String[]
   collectionID String
   collection Collection @relation(fields: [collectionID], references: [id], onDelete: Cascade)
 }
