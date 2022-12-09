@@ -55,7 +55,7 @@ const Collection: NextPage = () => {
                   case "Search":
                     return <SearchView collectionID={data.id} data={data.files}setDocInViewer={setDocInViewer} />;
                   case "Tasks":
-                    return <TasksViewer/>
+                    return <TasksViewer collectionID={data.id}/>
                 }
             })()}
       </div>
