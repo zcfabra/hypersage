@@ -9,5 +9,12 @@ export const tasksRouter = router({
             return null;
         }
         return tasks;
+    }),
+
+    createTask: protectedProcedure.input(z.object({collectionID: z.string(), filesToInclude: z.string().array(), type: z.string()})).mutation(async({ctx, input})=>{
+        setTimeout( ()=>{
+            return {data: "hi"};
+
+        }, 5000);
     })
 })

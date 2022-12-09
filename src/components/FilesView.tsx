@@ -52,7 +52,7 @@ const FilesView: React.FC<FilesViewProps> = ({collectionID, data, setDocInViewer
 
             </div>
         )}
-        <div className='w-10/12 h-16 mb-2 flex flex-row justify-end items-center'>
+        <div className='w-10/12 h-12 mb-8 flex flex-row justify-end items-center'>
             <button onClick={()=>setShowAddFilesMenu(true)} className='btn-primary'>Add Files</button>
 
         </div>

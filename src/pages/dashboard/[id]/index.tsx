@@ -1,20 +1,22 @@
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
-import { getServerAuthSession } from '../../server/common/get-server-auth-session'
-import { trpc } from '../../utils/trpc'
+import { getServerAuthSession } from '../../../server/common/get-server-auth-session'
+import { trpc } from '../../../utils/trpc'
 import {TbSearch as Search, TbFileAnalytics as Files, TbChartInfographic as Visualize} from "react-icons/tb"
 import {BsLightningCharge as Tasks} from "react-icons/bs"
-import FilesView from '../../components/FilesView'
-import { FileContainer } from '../upload'
-import DocViewer from '../../components/DocViewer'
-import SearchView from '../../components/SearchView'
-import TasksViewer from '../../components/TasksViewer'
+import FilesView from '../../../components/FilesView'
+import { FileContainer } from '../../upload'
+import DocViewer from '../../../components/DocViewer'
+import SearchView from '../../../components/SearchView'
+
+import TasksView from '../../../components/TasksView'
 
 
 const Collection: NextPage = () => {
   const router = useRouter();
-  const [tab, setTab] = useState<string>("Files");
+  console.log(router);
+  const [tab, setTab] = useState<string>(router.query.selected ? router.query.selected as string : "Files");
   console.log(router.query.id);
   const [docInViewer, setDocInViewer] = useState<string| null>(null);
 
@@ -55,7 +57,7 @@ const Collection: NextPage = () => {
                   case "Search":
                     return <SearchView collectionID={data.id} data={data.files}setDocInViewer={setDocInViewer} />;
                   case "Tasks":
-                    return <TasksViewer collectionID={data.id}/>
+                    return <TasksView collectionID={data.id} data={data.files}/>
                 }
             })()}
       </div>
