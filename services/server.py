@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, make_response
 from spacy.pipeline import EntityRecognizer
 from flask_cors import CORS
 import spacy
@@ -18,15 +18,21 @@ def nerRoute():
     data = request.json["data"]
     print(data)
 
+    out = []
+
     for file in data:
         text = file["file"]["text"]
         doc = nlp(text)
-        for ent in doc.ents:
-            print(ent.text, ent.label_)
+        out.append({"fileID": file["file"]["id"] ,"data": [{"text": ent.text, "type": ent.label_} for ent in doc.ents]})
+    print(out)
+    res = make_response(jsonify({"data": out}))
+    res.headers["Content-Type"] = "application/json"
+
+    return res
 
 
 
-    return data
+
 
 
 

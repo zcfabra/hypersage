@@ -36,8 +36,23 @@ export const tasksRouter = router({
                 collection: {
                     connect: {id: input.collectionID}
                 }
-            }
+            }, 
+            include: {filesToInclude: {include:{file: true}}}
         });
+        console.log("TASK:", task);
+
+        const res = await fetch(`http://localhost:5000/tasks/${task.type}`, {
+            method: "POST",  
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({data: task.filesToInclude}),
+        });
+
+        console.log("RET FROM PYTHON",res);
+
+        return {data: "Hi from python"}
+
 
 
 

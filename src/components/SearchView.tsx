@@ -1,6 +1,6 @@
 import { File } from '@prisma/client';
 import React, { useState } from 'react'
-import { FileContainer } from '../types';
+
 
 import { trpc } from '../utils/trpc';
 import FileTable from './FileTable';
