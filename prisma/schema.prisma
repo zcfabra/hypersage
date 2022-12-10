@@ -78,7 +78,7 @@ model File{
   size Int 
   collectionId String
   collection Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
-
+  usedInTasks TasksToFiles[]
 }
 
 model Collection{
@@ -98,7 +98,16 @@ model Task{
   id String @id @default(cuid())
   name String
   type String
-  filesToInclude String[]
+  filesToInclude TasksToFiles[]
   collectionID String
   collection Collection @relation(fields: [collectionID], references: [id], onDelete: Cascade)
+}
+
+model TasksToFiles{
+  taskID String
+  task Task @relation(fields: [taskID],references: [id], onDelete: Cascade)
+  fileID String
+  file File @relation(fields: [fileID], references: [id], onDelete: Cascade)
+
+  @@id([taskID, fileID])
 }

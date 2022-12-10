@@ -5,6 +5,7 @@ import { flushSync } from 'react-dom';
 import { FileContainer } from '../pages/upload';
 import { AppRouter } from '../server/trpc/router/_app';
 import { trpc } from '../utils/trpc'
+import TaskViewer from './TaskViewer';
 interface TaskViewProps {
     collectionID: string,
     data: FileContainer[],
@@ -14,6 +15,7 @@ const TasksView: React.FC<TaskViewProps> = ({collectionID, data}) => {
     const router = useRouter();
     const [taskType, setTaskType] = useState<string>("Sentiment");
     const [taskName, setTaskName] = useState("");
+    const [selectedTask, setSelectedTask] = useState<number | null>(null);
     // console.log(router)
 
     const trpcContext = trpc.useContext();
@@ -98,7 +100,13 @@ const TasksView: React.FC<TaskViewProps> = ({collectionID, data}) => {
                 }
                 </div>
                 { taskName.length > 0 && selectedFiles.includes(true) && <button onClick={handleCreateTask} disabled={createTaskMutation.isLoading} className={`btn-primary  absolute bottom-4  flex flex-col items-center  justify-center right-4`}>Create</button>}
-            </div> :
+            </div> : selectedTask != null? 
+            <>
+                <div className='w-10/12 h-5/6'>
+                    <TaskViewer setSelectedTask={setSelectedTask}/>
+                </div>
+            </>
+            :
             <>
                 <div className='w-10/12 flex justify-end mb-8'>
                     <button onClick={()=>setNewTaskMenu(true)}className='w-32 h-12 rounded-md bg-black text-white'>New Task</button>
@@ -116,7 +124,7 @@ const TasksView: React.FC<TaskViewProps> = ({collectionID, data}) => {
                     <div className='w-full h-full overflow-y-scroll'>
                     {
                         tasks.data && tasks.data.map((i,ix)=>(
-                            <div key={ix}  className='cursor-pointer hover:bg-gray-50 w-full h-16 border-b border-gray-300 flex flex-row items-center'>
+                            <div key={ix} onClick={()=>setSelectedTask(ix)} className='cursor-pointer hover:bg-gray-50 w-full h-16 border-b border-gray-300 flex flex-row items-center'>
                                 <div className='w-3/12 h-full flex flex-row items-center px-8'>
                                     <span className=''>{i.name}</span>
                                 </div>

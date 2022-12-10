@@ -26,8 +26,16 @@ export const tasksRouter = router({
             {
                 name: input.name,
                 type: input.type,
-                filesToInclude: input.filesToInclude,
-                collection: {connect: {id: input.collectionID}}
+                filesToInclude: {
+                    create: input.filesToInclude.map((i)=>({
+                        file:{ connect:{
+                            id: i
+                        }}
+                    }))
+                },
+                collection: {
+                    connect: {id: input.collectionID}
+                }
             }
         });
 

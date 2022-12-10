@@ -1,15 +1,18 @@
+import { File } from '@prisma/client';
 import React, { useState } from 'react'
-import { FileContainer } from '../pages/upload'
+import { FileContainer } from '../types';
+
 import { trpc } from '../utils/trpc';
+import FileTable from './FileTable';
 
 interface SearchViewProps{
     collectionID: string,
     setDocInViewer: React.Dispatch<React.SetStateAction<string | null>>,
-    // triggerRefetch: () => void,
-    data: FileContainer[]
+    triggerRefetch: () => void,
+    data: File[]
 }
 
-const SearchView: React.FC<SearchViewProps> = ({data, collectionID, setDocInViewer}) => {
+const SearchView: React.FC<SearchViewProps> = ({data, collectionID, setDocInViewer, triggerRefetch}) => {
     const [query, setQuery] = useState<string>("");
     const found = trpc.collections.fullTextSearchInCollection.useQuery({collectionID: collectionID, query: query}, {
         initialData: data ,
@@ -39,11 +42,7 @@ const SearchView: React.FC<SearchViewProps> = ({data, collectionID, setDocInView
             </div>
 
             <div className='w-10/12 mt-8 flex flex-col items-center'>
-                {found.data && found.data.map((i,ix)=>(
-                    <div key={ix} onClick={()=>setDocInViewer(i.id)} className='w-full px-4 cursor-pointer h-16 border-b border-gray-300 flex flex-row items-center'>
-                        <span>{i.name}</span>
-                    </div>
-                ))}
+              {found.data && <FileTable allowDelete={false} data={found.data} displaySize={false} displayType={false} headless={true}  setDocInViewer={setDocInViewer} triggerRefetch={triggerRefetch}/> }
             </div>
             {/* <button onClick={()=>setTasks} className='absolute bottom-4 right-4 btn-primary'>Send to Tasks</button> */}
         </div>
