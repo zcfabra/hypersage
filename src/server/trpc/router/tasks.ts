@@ -51,7 +51,7 @@ export const tasksRouter = router({
 
         console.log("RET FROM PYTHON",res);
 
-        return {data: "Hi from python"}
+        return {data: await res.json()}
 
 
 

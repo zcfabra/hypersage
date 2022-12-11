@@ -30,6 +30,36 @@ def nerRoute():
 
     return res
 
+@app.route("/tasks/Similarity", methods=["POST"])
+def similarityRoute():
+    files = request.json["data"]
+    print("FILES",files)
+    ids = [file["fileID"] for file in files]
+    docs = [nlp(file["file"]["text"]) for file in files]
+
+
+    out = {}
+    for ix, doc in enumerate(docs):
+        similarities = {}
+
+        for idx, other_doc in enumerate(docs):
+            if other_doc == doc:
+                continue
+            if other_doc in out:
+                similarities[ids[idx]] = out[ids[idx]][ids[ix]]
+            
+            else:
+                similarities[ids[idx]] = doc.similarity(other_doc)
+
+        out[ids[ix]] = similarities
+    print(out)
+    res = make_response(jsonify(out))
+    res.headers["Content-Type"] = "application/json"
+    return res
+
+
+        
+
 
 
 
