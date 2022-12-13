@@ -18,10 +18,11 @@ export type SimilarityTable= {
     }
 }
 
-const connectNewTasks = (dataToUnpack: {[key:string] : number}) =>{
+const connectNewTasks = (dataToUnpack: {[key:string] : number | string}[]) =>{
 
     return {create: dataToUnpack.map(i=>({
-        
+        label: i.label,
+        text:i.text,
     })) }
 }
 
