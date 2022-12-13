@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { trpc } from "../../../utils/trpc";
 import { protectedProcedure, router } from "../trpc";
@@ -11,6 +12,18 @@ async function sleep() {
 
 }
 
+export type SimilarityTable= {
+    [key:string]: {
+        [key:string]: number,
+    }
+}
+
+const connectNewTasks = (dataToUnpack: {[key:string] : number}) =>{
+
+    return {create: dataToUnpack.map(i=>({
+        
+    })) }
+}
 
 export const tasksRouter = router({
     getTasksForCollection: protectedProcedure.input(z.object({collectionID: z.string()})).query(async ({ctx, input})=>{
@@ -51,7 +64,30 @@ export const tasksRouter = router({
 
         console.log("RET FROM PYTHON",res);
 
-        return {data: await res.json()}
+        let unpack = await res.json();
+        console.log(unpack)
+
+
+
+        const addToTask = await ctx.prisma.task.update({data: {
+            // [task.type == "Similarity" ? "similarities" : task.type == "NER" ? "ner" : "sentiment"]: task.type == "Similarity" ? 
+            // unpack : connectNewTasks(unpack) ,
+            ner: {
+                create: {
+
+                }
+            }
+        }, where: {id: task.id}});
+
+        if (!addToTask){
+            throw new TRPCError({
+                code: "INTERNAL_SERVER_ERROR",
+                message: "Error when updating task with computed data",
+            });
+
+        }
+
+        else return true;
 
 
 

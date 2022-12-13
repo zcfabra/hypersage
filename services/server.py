@@ -23,7 +23,7 @@ def nerRoute():
     for file in data:
         text = file["file"]["text"]
         doc = nlp(text)
-        out.append({"fileID": file["file"]["id"] ,"data": [{"text": ent.text, "type": ent.label_} for ent in doc.ents]})
+        out.append({"fileID": file["file"]["id"] ,"data": [{"text": ent.text, "label": ent.label_} for ent in doc.ents]})
     print(out)
     res = make_response(jsonify({"data": out}))
     res.headers["Content-Type"] = "application/json"

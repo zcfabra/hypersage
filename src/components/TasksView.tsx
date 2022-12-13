@@ -23,6 +23,7 @@ const TasksView: React.FC<TaskViewProps> = ({collectionID, data}) => {
     const createTaskMutation = trpc.tasks.createTask.useMutation({
         onSuccess(res){
             console.log("RES:",res)
+            tasks.refetch();
         }
     })
 
@@ -61,7 +62,8 @@ const TasksView: React.FC<TaskViewProps> = ({collectionID, data}) => {
         setNewTaskMenu(false);
 
     });
-    trpcContext.tasks.getTasksForCollection.setData({collectionID:collectionID}, (old)=>[...old!, {...out, id: "TBD"}]);
+    trpcContext.tasks.getTasksForCollection.setData({collectionID:collectionID}, (old)=>[...old!, {...out, id: "TBD", type: taskType, collectionID: collectionID, similarities: null, name: taskName }]);
+
     
 
     createTaskMutation.mutateAsync(out);
@@ -103,7 +105,7 @@ const TasksView: React.FC<TaskViewProps> = ({collectionID, data}) => {
             </div> : selectedTask != null? 
             <>
                 <div className='w-10/12 h-5/6'>
-                    <TaskViewer setSelectedTask={setSelectedTask}/>
+                    {selectedTask !=null && <TaskViewer data={tasks.data![selectedTask]!} setSelectedTask={setSelectedTask}/>}
                 </div>
             </>
             :

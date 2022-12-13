@@ -101,7 +101,7 @@ model Task{
   filesToInclude TasksToFiles[]
   collectionID String
   collection Collection @relation(fields: [collectionID], references: [id], onDelete: Cascade)
-  nerData NER[]
+  ner NER[]
   similarities Json?
   sentiment Sentiment[]
 }
