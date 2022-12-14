@@ -1,4 +1,5 @@
 import { TRPCError } from "@trpc/server";
+import { TbSalt } from "react-icons/tb";
 import { z } from "zod";
 import { trpc } from "../../../utils/trpc";
 import { protectedProcedure, router } from "../trpc";
@@ -18,13 +19,9 @@ export type SimilarityTable= {
     }
 }
 
-const connectNewTasks = (dataToUnpack: {[key:string] : number | string}[]) =>{
 
-    return {create: dataToUnpack.map(i=>({
-        label: i.label,
-        text:i.text,
-    })) }
-}
+
+
 
 export const tasksRouter = router({
     getTasksForCollection: protectedProcedure.input(z.object({collectionID: z.string()})).query(async ({ctx, input})=>{
@@ -66,32 +63,36 @@ export const tasksRouter = router({
         console.log("RET FROM PYTHON",res);
 
         let unpack = await res.json();
-        console.log(unpack)
+        console.log("UNPACK",unpack)
 
+        let addToTask = await ctx.prisma.task.update({
+            where:{
+                id: task.id,
+            },
+            data: {
+                taskData: unpack
 
-
-        const addToTask = await ctx.prisma.task.update({data: {
-            // [task.type == "Similarity" ? "similarities" : task.type == "NER" ? "ner" : "sentiment"]: task.type == "Similarity" ? 
-            // unpack : connectNewTasks(unpack) ,
-            ner: {
-                create: {
-
-                }
             }
-        }, where: {id: task.id}});
-
+        })
         if (!addToTask){
             throw new TRPCError({
                 code: "INTERNAL_SERVER_ERROR",
-                message: "Error when updating task with computed data",
-            });
-
+                message: "Error updating task with computed data"
+            })
+        } else {
+            return true;
         }
-
-        else return true;
-
-
-
+    }),
+    deleteTask: protectedProcedure.input(z.object({id: z.string()})).mutation(async ({ctx,input})=>{
+        const deleted = await ctx.prisma.task.delete({where:{id: input.id}});
+        if (!deleted){
+            throw new TRPCError({
+                code: "BAD_REQUEST",
+                message: "Unable to delete the task"
+            })
+        } else {
+            return true;
+        }
 
     })
 })

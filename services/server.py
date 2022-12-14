@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, make_response
 from spacy.pipeline import EntityRecognizer
+from spacytextblob.spacytextblob import SpacyTextBlob
 from flask_cors import CORS
 import spacy
 import time
@@ -8,6 +9,7 @@ app = Flask(__name__)
 cors = CORS()
 
 nlp = spacy.load("en_core_web_sm")
+nlp.add_pipe("spacytextblob")
 
 
 
@@ -40,9 +42,15 @@ def sentimentRoute():
 
     out = {}
     for ix, doc in enumerate(docs):
-        out[ids[ix]] = {"score": (sent_score:=doc._.blob.polarity), "sentiment": "POS" if sent_score > 0.0 else "NEG", "pos_words": [each[0][0] for each in doc._.sentiment_assessments.assessments if each[1] > 0], "neg_words": [each[0][0] for each in doc._.sentiment_assessments.assessments if each[1] < 0]}
+        out[ids[ix]] = {
+            "score": (sent_score:=doc._.blob.polarity),
+            "sentiment": "POS" if sent_score > 0.0 else "NEG",
+            "pos_words": [each[0][0] for each in doc._.blob.sentiment_assessments.assessments if each[1] > 0],
+            "neg_words": [each[0][0] for each in doc._.blob.sentiment_assessments.assessments if each[1] < 0]
+            }
     res = make_response(jsonify(out))
     res.headers["Content-Type"] = "application/json"
+    print(res)
     return res
 
 @app.route("/tasks/Similarity", methods=["POST"])

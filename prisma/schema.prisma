@@ -101,26 +101,24 @@ model Task{
   filesToInclude TasksToFiles[]
   collectionID String
   collection Collection @relation(fields: [collectionID], references: [id], onDelete: Cascade)
-  ner NER[]
-  similarities Json?
-  sentiment Sentiment[]
+  taskData Json?
 }
 
-model Sentiment {
-  id Int @id @default(autoincrement())
-  score Int
-  taskID String
-  file Task @relation(fields: [taskID], references: [id], onDelete: Cascade)
+// model Sentiment {
+//   id Int @id @default(autoincrement())
+//   score Int
+//   taskID String
+//   file Task @relation(fields: [taskID], references: [id], onDelete: Cascade)
 
-}
+// }
 
-model NER{
-  id Int @id @default(autoincrement())
-  label String
-  text String
-  taskID String
-  task Task @relation(fields: [taskID], references: [id], onDelete: Cascade)
-}
+// model NER{
+//   id Int @id @default(autoincrement())
+//   label String
+//   text String
+//   taskID String
+//   task Task @relation(fields: [taskID], references: [id], onDelete: Cascade)
+// }
 
 
 
