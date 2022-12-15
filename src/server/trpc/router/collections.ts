@@ -137,6 +137,19 @@ export const collectionsRouter = router({
         console.log(res);
 
         return res;
+    }),
+
+    deleteCollection: protectedProcedure.input(z.object({collectionID: z.string()})).mutation(async ({ctx, input})=>{
+        const deleted = await ctx.prisma.collection.delete({where: {id: input.collectionID}});
+
+        if (!deleted){
+            throw new TRPCError({
+                code: "INTERNAL_SERVER_ERROR",
+                message: "Couldn't delete collection"
+            });
+        } else {
+            return true;
+        }
     })
 
       

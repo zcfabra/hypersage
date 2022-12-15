@@ -25,7 +25,9 @@ export type SimilarityTable= {
 
 export const tasksRouter = router({
     getTasksForCollection: protectedProcedure.input(z.object({collectionID: z.string()})).query(async ({ctx, input})=>{
-        const tasks = await ctx.prisma.task.findMany({where: {collectionID: input.collectionID}});
+        const tasks = await ctx.prisma.task.findMany({where: {collectionID: input.collectionID}, include:{
+            filesToInclude: {select:{file:{select:{name: true,id:true}}}}
+        }});
         if (!tasks){
             return null;
         }

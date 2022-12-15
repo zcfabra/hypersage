@@ -15,6 +15,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
     <SessionProvider session={session}>
       <Head>
         <title>Hypersage</title>
+        <link rel="icon" href="../../public/favicon.ico" />
       </Head>
       <Component {...pageProps} />
     </SessionProvider>

@@ -1,10 +1,12 @@
+import { Task } from '@prisma/client'
 import React from 'react'
 import { FileContainer } from '../pages/upload'
 import { trpc } from '../utils/trpc'
 
 interface DocViewerProps{
     doc: string,
-    setDocInViewer: React.Dispatch<React.SetStateAction<string | null>>
+    setDocInViewer: React.Dispatch<React.SetStateAction<string | null>>,
+    taskData?: Task
 }
 
 const DocViewer: React.FC<DocViewerProps> = ({doc, setDocInViewer}) => {

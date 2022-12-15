@@ -30,7 +30,7 @@ def nerRoute():
     print(out)
     res = make_response(jsonify(out))
     res.headers["Content-Type"] = "application/json"
-    # time.sleep(10)
+    time.sleep(10)
     return res
 
 @app.route("/tasks/Sentiment", methods=["POST"])
