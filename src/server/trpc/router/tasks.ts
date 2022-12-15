@@ -13,9 +13,27 @@ async function sleep() {
 
 }
 
-export type SimilarityTable= {
+export interface SimilarityTable{
     [key:string]: {
         [key:string]: number,
+    }
+}
+
+export interface NERTable{
+    [key:string]: {
+        data: {
+            label: string,
+            text: string,
+        }[]
+    }
+};
+
+export interface SentimentTable {
+    [key:string]:{
+        sentiment: String,
+        score: number,
+        neg_words: string[],
+        pos_words:string[],
     }
 }
 

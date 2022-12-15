@@ -44,7 +44,7 @@ def sentimentRoute():
     for ix, doc in enumerate(docs):
         out[ids[ix]] = {
             "score": (sent_score:=doc._.blob.polarity),
-            "sentiment": "POS" if sent_score > 0.0 else "NEG",
+            "sentiment": "POS" if sent_score > 0.0 else  "NEU" if sent_score == 0 else  "NEG",
             "pos_words": [each[0][0] for each in doc._.blob.sentiment_assessments.assessments if each[1] > 0],
             "neg_words": [each[0][0] for each in doc._.blob.sentiment_assessments.assessments if each[1] < 0]
             }
