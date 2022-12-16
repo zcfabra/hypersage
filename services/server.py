@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 cors = CORS()
 
-nlp = spacy.load("en_core_web_sm")
+nlp = spacy.load("en_core_web_trf")
 nlp.add_pipe("spacytextblob")
 
 
@@ -30,7 +30,7 @@ def nerRoute():
     print(out)
     res = make_response(jsonify(out))
     res.headers["Content-Type"] = "application/json"
-    time.sleep(10)
+    # time.sleep(10)
     return res
 
 @app.route("/tasks/Sentiment", methods=["POST"])
