@@ -40,7 +40,11 @@ const TaskViewer: React.FC<TaskViewerProps> = ({setSelectedTask, setDocInViewer,
                     ?
                     (data.taskData![i.file.id as keyof object] as NERTableItem).data.length
                     :
+                    data.type == "Sentiment"
+                    ?
                     String((data.taskData![i.file.id as keyof object] as SentimentTableItem).score.toPrecision(2)) + " " + (data.taskData![i.file.id as keyof object] as SentimentTableItem).sentiment
+                    :
+                    "YO"
                     }</p>
                 </div>
             </div>
