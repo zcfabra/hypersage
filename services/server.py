@@ -58,21 +58,56 @@ def similarityRoute():
     files = request.json["data"]
     print("FILES",files)
     ids = [file["fileID"] for file in files]
+    names = {file["fileID"]: file["file"]["name"] for file in files}
     docs = [nlp(file["file"]["text"]) for file in files]
 
 
     out = {}
     for ix, doc in enumerate(docs):
-        similarities = {}
-
+        similarities = {
+            "name": names[ids[ix]],
+            "similarities": {}
+        }
+        most_sim = None
+        most_sim_key = None
+        least_sim = None
+        least_sim_key = None
         for idx, other_doc in enumerate(docs):
+            if idx == ix:
+                continue
+            sim = doc.similarity(other_doc)
+            if most_sim is None or sim > most_sim :
+                most_sim = sim
+                most_sim_key = ids[idx]
+            
+            if least_sim is None or sim < least_sim:
+                least_sim = sim
+                least_sim_key = ids[idx]
+
+
             if other_doc == doc:
                 continue
             if other_doc in out:
-                similarities[ids[idx]] = out[ids[idx]][ids[ix]]
+                similarities["similarities"][ids[idx]] = {
+                    "score": out[ids[idx]]["similarities"][ids[ix]],
+                    "name": names[ids[idx]]
+                    }
             
             else:
-                similarities[ids[idx]] = doc.similarity(other_doc)
+                similarities["similarities"][ids[idx]] = {
+                    "score":sim,
+                    "name": names[ids[idx]]
+                    }
+            similarities["mostSimilar"] = {
+                "id": most_sim_key,
+                "name": names[most_sim_key]
+                }
+            similarities["leastSimilar"] = {
+                "id": least_sim_key,
+                "name": names[least_sim_key]
+                }
+
+
 
         out[ids[ix]] = similarities
     print(out)
