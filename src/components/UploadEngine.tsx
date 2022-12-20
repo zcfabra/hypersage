@@ -1,4 +1,5 @@
 import { UseMutateFunction } from '@tanstack/react-query';
+import mammoth from 'mammoth';
 import React, { useState } from 'react'
 import { FileContainer } from '../pages/upload'
 
@@ -15,7 +16,15 @@ const UploadEngine: React.FC<UploadEngineProps> = ({passedMutation}) => {
         if (e.target.files){
 
             for (let file of e.target.files){
-                let extracted_text = await file.text();
+                console.log(file.type);
+                let extracted_text;
+                if (file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ){
+                   extracted_text = await mammoth.extractRawText({arrayBuffer: await file.arrayBuffer()}).then(res=>res.value);
+                } else if (file.type == "text/markdown" || file.type == "text/plain")  {
+                     extracted_text = await file.text();
+                } else {
+                    continue;
+                }
                 
                 out.push({
                     name: file.name,

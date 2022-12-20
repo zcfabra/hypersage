@@ -14,8 +14,23 @@ async function sleep() {
 }
 
 export interface SimilarityTable{
+  
     [key:string]: {
-        [key:string]: number,
+        name: string,
+        similarities: {
+        [key:string]: {
+            name: string,
+            score: number
+        },
+        },
+        mostSimilar: {
+            name: string,
+            id: string
+        },
+        leastSimilar: {
+            name:string,
+            id:string,
+        }
     }
 }
 

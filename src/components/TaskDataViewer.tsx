@@ -18,7 +18,25 @@ const TaskDataViewer: React.FC<TaskDataViewerProps> = ({data, type, fileID}) => 
     console.log(fileID);
   return type == "Similarity" 
   ?
-  <div></div>
+  <div >
+    <div className='w-full h-16 flex flex-row items-center px-8 font-bold text-lg'>
+        <span>{(data as SimilarityTableItem).name}</span>
+    </div>
+    <div>
+
+
+    {
+        Object.keys((data as SimilarityTableItem).similarities).map((i)=>(
+        <div className='w-full h-16 border-b border-gray-300 flex'>
+            <div className='w-3/12 h-full flex flex-row items-center px-8'>
+                {(data as SimilarityTableItem).similarities[i as keyof object]!.name}
+            </div>
+            <div className='font-bold w-3/12 h-full flex flex-row items-center'>{(data as SimilarityTableItem).similarities[i as keyof object]!.score.toPrecision(2)}</div>
+        </div>
+        ))
+    }
+    </div>
+  </div>
   :
   <HighlightedDocViewer type={type} fileID={fileID} data={type == "NER" ? data as NERTableItem : data as SentimentTableItem}/>
 

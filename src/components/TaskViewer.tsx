@@ -1,9 +1,9 @@
 import { Task } from '@prisma/client';
 import { inferProcedureOutput } from '@trpc/server';
 import React, { useEffect, useState } from 'react'
-import { NERTable, SentimentTable } from '../server/trpc/router/tasks';
+import { NERTable, SentimentTable, SimilarityTable } from '../server/trpc/router/tasks';
 import { AppRouter } from '../server/trpc/router/_app';
-import TaskDataViewer, { NERTableItem, SentimentTableItem } from './TaskDataViewer';
+import TaskDataViewer, { NERTableItem, SentimentTableItem, SimilarityTableItem } from './TaskDataViewer';
 
 interface TaskViewerProps{
     setSelectedTask: React.Dispatch<React.SetStateAction<number|null>>;
@@ -35,8 +35,8 @@ const TaskViewer: React.FC<TaskViewerProps> = ({setSelectedTask, setDocInViewer,
                 <div className='w-3/12 h-full flex flex-row items-center px-8'>
                     <span>{i.file.name}</span>
                 </div>
-                <div className='w-full h-full flex flex-row items-center px-8 overflow-hidden'>
-                    <p>{data.type == "NER"
+                <div className='w-full h-full text-gray-500 flex flex-row items-center px-8 overflow-hidden'>
+                    <span>{data.type == "NER"
                     ?
                     (data.taskData![i.file.id as keyof object] as NERTableItem).data.length
                     :
@@ -44,8 +44,8 @@ const TaskViewer: React.FC<TaskViewerProps> = ({setSelectedTask, setDocInViewer,
                     ?
                     String((data.taskData![i.file.id as keyof object] as SentimentTableItem).score.toPrecision(2)) + " " + (data.taskData![i.file.id as keyof object] as SentimentTableItem).sentiment
                     :
-                    "YO"
-                    }</p>
+                    "Most Similar: " + (data.taskData![i.file.id as keyof object] as SimilarityTableItem).mostSimilar.name
+                    }</span>
                 </div>
             </div>
            )) : <TaskDataViewer fileID={showTaskDataForFile} type={data.type} data={data.taskData![showTaskDataForFile as keyof object]}/>}

@@ -7,7 +7,7 @@ interface HighlightedDocViewerProps{
     type:string,
     fileID: string
 }
-const tagColors = { 'ORG': "bg-blue-500", 'FAC': "bg-green-500", 'CARDINAL': "bg-red-500", 'DATE': "bg-lime-500", 'GPE': "bg-pink-400", 'PERSON': "bg-teal-400", 'MONEY': "bg-amber-400", 'PRODUCT': "bg-rose-300", 'TIME': "bg-blue-300", 'PERCENT': "bg-emerald-500", 'WORK_OF_ART': "bg-indigo-500", 'QUANTITY': "bg-fuchsia-300", 'NORP': "bg-slate-400", 'LOC': "bg-red-300", 'EVENT': "bg-lime-500", 'ORDINAL': "bg-purple-500" }
+const tagColors = { 'ORG': "bg-blue-500", 'FAC': "bg-green-500", 'CARDINAL': "bg-red-500", 'DATE': "bg-lime-500", 'GPE': "bg-pink-400", 'PERSON': "bg-teal-400", 'MONEY': "bg-amber-400", 'PRODUCT': "bg-rose-300", 'TIME': "bg-blue-300", 'PERCENT': "bg-emerald-500", 'WORK_OF_ART': "bg-indigo-500", 'QUANTITY': "bg-fuchsia-300", 'NORP': "bg-slate-400", 'LOC': "bg-red-300", 'EVENT': "bg-lime-500", 'ORDINAL': "bg-purple-500", "LANGUAGE" : 'bg-violet-500' }
 const sentColors = {"POS": "bg-green-300", "NEG": "bg-red-300"};
 
 const escapeSpecials = (inp: string):string=>{
