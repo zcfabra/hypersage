@@ -34,7 +34,6 @@ const TasksView: React.FC<TaskViewProps> = ({collectionID, data, setDocInViewer}
         console.log(selectedFiles);
 
     },[selectedFiles])
-    const sample= [{name: "Something",type:"NER", id: "asidas"}, {name: "Something2",type:"Sentiment", id: "asd"}, {name: "Something3",type:"Similarity", id: "uuid"},{name: "Something4",type:"NER", id: "asdiuh"} ]
     const handleCheck = (ix:number)=>{
         setSelectedFiles(prev=>{
             const copy = [...prev]
@@ -98,7 +97,7 @@ const TasksView: React.FC<TaskViewProps> = ({collectionID, data, setDocInViewer}
                         <span className='ml-2'>Name</span>
                     </div>
                 </div>
-                <div>
+                <div className='overflow-y-auto'>
                 {
                     data.map((i,ix)=>(
                         <div key={ix} className='px-6 w-full h-16 border-b flex flex-row items-center'>
@@ -135,10 +134,10 @@ const TasksView: React.FC<TaskViewProps> = ({collectionID, data, setDocInViewer}
                         </div>
                         
                     </div>
-                    <div className='w-full h-full overflow-y-scroll'>
+                    <div className='w-full h-full overflow-y-auto'>
                     {
                         tasks.data && tasks.data.map((i,ix)=>(
-                            <div key={ix} onClick={()=>i.id != "TBD" && setSelectedTask(ix)} className={`${i.id == "TBD" ? "cursor-not-allowed" : "cursor-pointer"} hover:bg-gray-50 w-full h-16 border-b border-gray-300 flex flex-row items-center`}>
+                            <div key={ix} onClick={()=>i.id != "TBD" && setSelectedTask(ix)} className={`h-16 ${i.id == "TBD" ? "cursor-not-allowed" : "cursor-pointer"} hover:bg-gray-50 w-full h-16 border-b border-gray-300 flex flex-row items-center`}>
                                 <div className='w-3/12 h-full flex flex-row items-center px-8'>
                                     <span className=''>{i.name}</span>
                                 </div>

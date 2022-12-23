@@ -10,7 +10,7 @@ import { getServerAuthSession } from '../server/common/get-server-auth-session'
 const Login =  () => {
     return (
         <div className='w-full h-screen bg-gray-100 flex flex-col items-center justify-center'>
-            <div className='w-4/12 h-5/6 rounded-xl bg-white flex flex-col items-center p-4'>
+            <div className='w-10/12 sm:w-7/12 md:w-6/12 lg:w-4/12 h-5/6 rounded-xl bg-white flex flex-col items-center p-4'>
                 <h1 className='text-5xl font-bold'>Login</h1>
                 <Formik
                     initialValues={{email: "", password: ""}}

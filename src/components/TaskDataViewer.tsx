@@ -19,7 +19,7 @@ const TaskDataViewer: React.FC<TaskDataViewerProps> = ({data, type, fileID}) => 
   return type == "Similarity" 
   ?
   <div >
-    <div className='w-full h-16 flex flex-row items-center px-8 font-bold text-lg'>
+    <div className='w-full h-16 mt-2 flex flex-row items-center px-8 font-bold text-lg'>
         <span>{(data as SimilarityTableItem).name}</span>
     </div>
     <div>
@@ -28,10 +28,10 @@ const TaskDataViewer: React.FC<TaskDataViewerProps> = ({data, type, fileID}) => 
     {
         Object.keys((data as SimilarityTableItem).similarities).map((i)=>(
         <div className='w-full h-16 border-b border-gray-300 flex'>
-            <div className='w-3/12 h-full flex flex-row items-center px-8'>
+            <div className='w-6/12 h-full flex flex-row items-center px-8'>
                 {(data as SimilarityTableItem).similarities[i as keyof object]!.name}
             </div>
-            <div className='font-bold w-3/12 h-full flex flex-row items-center'>{(data as SimilarityTableItem).similarities[i as keyof object]!.score.toPrecision(2)}</div>
+            <div className='font-bold w-6/12 h-full flex flex-row items-center'>{(data as SimilarityTableItem).similarities[i as keyof object]!.score.toPrecision(2)}</div>
         </div>
         ))
     }

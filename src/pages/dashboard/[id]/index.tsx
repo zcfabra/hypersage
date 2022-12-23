@@ -20,12 +20,16 @@ const Collection: NextPage = () => {
   console.log(router.query.id);
   const [docInViewer, setDocInViewer] = useState<string| null>(null);
 
-  const MENU = ["Files", "Search", "Tasks", "Visualize"];
+  const MENU = ["Files",
+  "Search",
+  "Tasks",
+  // "Visualize"
+];
   const iconMap = {
     "Files": <Files/>,
     "Search": <Search/>,
     "Tasks": <Tasks/>,
-    "Visualize": <Visualize/>
+    // "Visualize": <Visualize/>
   }
 
   const {data, refetch} = trpc.collections.getCollection.useQuery({id: router.query.id as string}, {enabled: router.isReady})
@@ -34,21 +38,23 @@ const Collection: NextPage = () => {
     refetch();
   }
   return (
-    <div className='w-full h-screen bg-gray-100 flex flex-row'>{data ? (<>
+    <div className='w-full h-screen bg-gray-100 flex flex-col sm:flex-row overflow-y-hidden'>{data ? (<>
     { docInViewer && <DocViewer setDocInViewer={setDocInViewer} doc={docInViewer}/>}
-      <div className='w-2/12 h-full bg-white shadow-xl flex flex-col'>
-        <span className='m-4 text-2xl font-semibold'>{data.name}</span>
-        <div className='mt-12 w-full h-5/6'>
+      <div className='sm:w-2/12 w-full  h-16  sm:h-full  shadow-xl flex sm:flex-col items-center'>
+        <span className='p-4 sm:h-16 h-full sm:w-full text-md sm:text-2xl font-semibold'>{data.name}</span>
+        <div className='sm:mt-12 w-9/12 sm:w-full flex-1 h-full flex sm:flex-col'>
           {MENU.map((i, ix)=>(
-            <div key={ix} onClick={()=>setTab(i)} className={`w-full ${i == tab && "bg-pink-400 text-white"} h-16 p-4 cursor-pointer hover:bg-pink-400 hover:text-white transition-all flex flex-row items-center`}>
-              {iconMap[i as keyof object]}
-              <span className='ml-4'>{i}</span>
+            <div key={ix} onClick={()=>setTab(i)} className={`w-4/12 sm:w-full ${i == tab && "bg-pink-400 text-white"} h-16 sm:h-16 sm:p-4 cursor-pointer hover:bg-pink-400 hover:text-white transition-all flex flex-row items-center`}>
+              <span className='ml-2 sm:ml-0 h-full flex items-center'>
+                {iconMap[i as keyof object]}
+                </span>
+              <span className=' ml-2 sm:ml-4'>{i}</span>
               
             </div>
           ))}
         </div>
       </div>
-      <div className='relative w-10/12 h-full'>
+      <div className='relative w-full flex-1 h-full sm:w-10/12'>
         <button onClick={()=>router.push("/dashboard")} className='absolute top-4 text-gray-500 hover:underline font-medium left-4'>Back</button>
       {(() => {
                 switch (tab) {

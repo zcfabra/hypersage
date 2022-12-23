@@ -20,7 +20,7 @@ const DocViewer: React.FC<DocViewerProps> = ({doc, setDocInViewer}) => {
         {fileWithText.data && (
             <div className='w-10/12 h-full p-8 flex flex-col'>
                 <span className='font-bold text-3xl mb-8'>{fileWithText.data.name}</span>
-                <div className='w-full overflow-y-scroll h-full'>
+                <div className='w-full overflow-y-auto h-full flex-1'>
                     <p>{fileWithText.data.text}</p>
                 </div>
                 

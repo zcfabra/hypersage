@@ -25,7 +25,7 @@ const Signup = () => {
         }}
       >
         {()=>(
-          <Form className='w-5/12 rounded-xl h-5/6 bg-white flex flex-col items-center'>
+          <Form className='w-10/12 sm:w-7/12 md:w-6/12 lg:w-4/12 rounded-xl h-5/6 bg-white flex flex-col items-center'>
             <h1 className='text-6xl font-bold mt-4'>Sign Up</h1>
             <div className='w-9/12 mt-8 flex flex-col items-center'>
               <FormInput type="email" name="email"/> 

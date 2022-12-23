@@ -47,8 +47,8 @@ const FilesView: React.FC<FilesViewProps> = ({collectionID, data, setDocInViewer
             <button onClick={()=>setShowAddFilesMenu(true)} className='btn-primary'>Add Files</button>
 
         </div>
-        <div className='w-10/12 h-4/6'>
-            <FileTable allowDelete={true} data={data} displaySize={true} displayType={true} headless={false} setDocInViewer={setDocInViewer} triggerRefetch={triggerRefetch}/>
+        <div className=' w-11/12 sm:w-10/12 h-5/6 text-sm'>
+            <FileTable truncate={true} allowDelete={true} data={data} displaySize={true} displayType={true} headless={false} setDocInViewer={setDocInViewer} triggerRefetch={triggerRefetch}/>
         </div>
     </div>
   )

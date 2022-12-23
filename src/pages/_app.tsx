@@ -16,6 +16,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
     <SessionProvider session={session}>
       <Head>
         <title>Hypersage</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="../../public/favicon.ico" />
       </Head>
       <Component {...pageProps} />

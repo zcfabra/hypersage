@@ -4,6 +4,7 @@ from spacytextblob.spacytextblob import SpacyTextBlob
 from flask_cors import CORS
 import spacy
 import time
+
 app = Flask(__name__)
 
 cors = CORS()
@@ -53,6 +54,15 @@ def sentimentRoute():
     print(res)
     return res
 
+
+def similarity(doc,other_doc):
+    print("SIMILARITIES")
+    print(doc._.trf_data.tensors[0].shape)
+    print(other_doc._.trf_data.tensors[0].shape)
+
+    print(doc._.trf_data.tensors[1].shape)
+    print(other_doc._.trf_data.tensors[1].shape)
+
 @app.route("/tasks/Similarity", methods=["POST"])
 def similarityRoute():
     files = request.json["data"]
@@ -75,6 +85,7 @@ def similarityRoute():
         for idx, other_doc in enumerate(docs):
             if idx == ix:
                 continue
+            similarity(doc, other_doc)
             sim = doc.similarity(other_doc)
             if most_sim is None or sim > most_sim :
                 most_sim = sim
