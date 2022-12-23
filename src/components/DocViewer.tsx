@@ -18,7 +18,7 @@ const DocViewer: React.FC<DocViewerProps> = ({doc, setDocInViewer}) => {
         <button onClick={()=>setDocInViewer(null)} className='w-12 h-12 absolute top-4 right-4 text-3xl'>X</button>
         
         {fileWithText.data && (
-            <div className='w-10/12 h-full p-8 flex flex-col'>
+            <div className='w-full  h-full p-8 flex flex-col'>
                 <span className='font-bold text-3xl mb-8'>{fileWithText.data.name}</span>
                 <div className='w-full overflow-y-auto h-full flex-1'>
                     <p>{fileWithText.data.text}</p>

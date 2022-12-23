@@ -37,8 +37,8 @@ const SearchView: React.FC<SearchViewProps> = ({data, collectionID, setDocInView
     <div className='w-full h-screen flex flex-col items-center justify-center'>
         <div className='relative w-10/12 h-5/6 rounded-xl bg-white border border-gray-300 flex flex-col items-center '>
             <div className='h-36 w-full flex justify-center items-center border-b px-8'>
-                <input value={query} onKeyDown={handleEnterKeySubmit} onChange={(e)=>setQuery(e.target.value)} placeholder="Search something..."className="outline-none w-10/12 h-12 rounded-l-md bg-gray-100 shadow-inner border border-gray-300  px-4"type="text" />
-                <button className='w-2/12 bg-pink-500 h-12 rounded-r-md text-white' onClick={handleExecuteSearch}>Search</button>
+                <input value={query} onKeyDown={handleEnterKeySubmit} onChange={(e)=>setQuery(e.target.value)} placeholder="Search..."className="outline-none w-8/12 sm:w-10/12 h-12 rounded-l-md bg-gray-100 shadow-inner border border-gray-300  px-4"type="text" />
+                <button className='w-4/12 sm:w-2/12 bg-pink-500 h-12 rounded-r-md text-white' onClick={handleExecuteSearch}>Search</button>
             </div>
 
                 <div className='w-full flex-1 h-full  flex flex-col items-center overflow-y-auto'>

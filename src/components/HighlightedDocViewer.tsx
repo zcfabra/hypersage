@@ -33,9 +33,13 @@ const HighlightedDocViewer:React.FC<HighlightedDocViewerProps> = ({fileID, data,
     console.log (map)
   return <div className='w-full flex flex-col p-8'>
             {fileWithText && fileWithText.data && <span dangerouslySetInnerHTML={{__html: fileWithText.data.text!.replace(matches, (matched)=>{
+                console.log(matched)
+                if (matched.length == 0) {
+                    return fileWithText.data.text!;
+                }
                 return type == "NER"
                 ?
-                `<span class='${tagColors[map.get(matched)! as keyof object]} whitespace-nowrap font-semibold rounded-md p-[1px]'>${matched} ${map.get(matched)}</span>`
+                `<span class='${tagColors[map.get(matched)! as keyof object]} whitespace-nowrap font-semibold rounded-md p-[1px]'>${matched}${map.get(matched) != undefined ?" "+ map.get(matched) : ""}</span>`
                 :
                 `<span class='${sentColors[map.get(matched)! as keyof object]} whitespace-nowrap font-semibold rounded-md p-[1px]'>${matched}</span>`
             })}}></span>}

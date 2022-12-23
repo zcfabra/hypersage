@@ -26,7 +26,7 @@ const TaskViewer: React.FC<TaskViewerProps> = ({setSelectedTask, setDocInViewer,
   return (
     <div className='w-full h-full bg-white rounded-lg border border-gray-300 flex flex-col'>
         <div className='w-full h-16 shrink-0 bg-gray-50 border-b rounded-t-lg border-gray-300 flex flex-row px-8'>
-            <button className='text-gray-500' onClick={()=>showTaskDataForFile==null ? setSelectedTask(null) : setShowTaskDataForFile(null)}>Back</button>
+              <button className='text-gray-500' onClick={() => showTaskDataForFile == null ? setSelectedTask(null) : setShowTaskDataForFile(null)}>&#60; Back</button>
 
         </div>
         <div className='w-full h-full flex-1 rounded-b-xl overflow-y-auto '>
@@ -44,12 +44,13 @@ const TaskViewer: React.FC<TaskViewerProps> = ({setSelectedTask, setDocInViewer,
                     ?
                     String((data.taskData![i.file.id as keyof object] as SentimentTableItem).score.toPrecision(2)) + " " + (data.taskData![i.file.id as keyof object] as SentimentTableItem).sentiment
                     :
+                    data.type == "Similarity" &&
                     "Most: " + (data.taskData![i.file.id as keyof object] as SimilarityTableItem).mostSimilar.name
                     }</span>
                 </div>
-                <div className='w-4/12 h-full text-gray-500 flex flex-row items-center p-8 overflow-hidden '>
+                {data.type == "Similarity" && <div className='w-4/12 h-full text-gray-500 flex flex-row items-center p-8 overflow-hidden '>
                     <span>Least: {(data.taskData![i.file.id as keyof object] as SimilarityTableItem).leastSimilar.name}</span>
-                </div>
+                </div>}
             </div>
            )) : <TaskDataViewer fileID={showTaskDataForFile} type={data.type} data={data.taskData![showTaskDataForFile as keyof object]}/>}
         </div>

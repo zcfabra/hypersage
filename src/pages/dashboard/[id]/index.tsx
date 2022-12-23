@@ -41,7 +41,7 @@ const Collection: NextPage = () => {
     <div className='w-full h-screen bg-gray-100 flex flex-col sm:flex-row overflow-y-hidden'>{data ? (<>
     { docInViewer && <DocViewer setDocInViewer={setDocInViewer} doc={docInViewer}/>}
       <div className='sm:w-2/12 w-full  h-16  sm:h-full  shadow-xl flex sm:flex-col items-center'>
-        <span className='p-4 sm:h-16 h-full sm:w-full text-md sm:text-2xl font-semibold'>{data.name}</span>
+        <span className='flex pl-4 w-3/12 sm:h-16 h-full sm:w-full text-md sm:text-2xl font-semibold items-center'>{data.name}</span>
         <div className='sm:mt-12 w-9/12 sm:w-full flex-1 h-full flex sm:flex-col'>
           {MENU.map((i, ix)=>(
             <div key={ix} onClick={()=>setTab(i)} className={`w-4/12 sm:w-full ${i == tab && "bg-pink-400 text-white"} h-16 sm:h-16 sm:p-4 cursor-pointer hover:bg-pink-400 hover:text-white transition-all flex flex-row items-center`}>
@@ -55,7 +55,7 @@ const Collection: NextPage = () => {
         </div>
       </div>
       <div className='relative w-full flex-1 h-full sm:w-10/12'>
-        <button onClick={()=>router.push("/dashboard")} className='absolute top-4 text-gray-500 hover:underline font-medium left-4'>Back</button>
+        <button onClick={() => router.push("/dashboard")} className='absolute top-4 text-gray-500 hover:underline font-medium left-4'>&#60; Home</button>
       {(() => {
                 switch (tab) {
                   case "Files":

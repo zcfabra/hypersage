@@ -30,7 +30,7 @@ const Dashboard: NextPage = () => {
                 {
                     collections && collections.data && collections.data.map((i, ix)=>(
 
-                        <div onClick={()=>router.push(`/dashboard/${i.id}`)}className='relative w-11/12 h-32 mb-8 rounded-xl shadow-md p-8 bg-white transition-all cursor-pointer flex flex-col'>
+                        <div key={ix} onClick={()=>router.push(`/dashboard/${i.id}`)}className='relative w-11/12 h-32 mb-8 rounded-xl shadow-md p-8 bg-white transition-all cursor-pointer flex flex-col'>
                             <span className='text-black font-medium text-2xl'>{i.name}</span>
                             <span className='text-sm'>Created {i.dateCreated.toLocaleDateString()}</span>
                             <span>{i.numFiles} File{i.numFiles != 1 && "s" }</span>
