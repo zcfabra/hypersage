@@ -30,6 +30,8 @@ const Signup = () => {
   })
   return (
     <div className='w-full h-screen bg-gray-100 flex flex-col items-center justify-center'>
+      <button onClick={()=>router.push("/")} className='absolute top-0 left-0 w-32 h-12 hover:underline transition-all text-gray-500 '>Home</button>
+
 
       <Formik
         initialValues={{email: "", password: ""}}
@@ -40,11 +42,13 @@ const Signup = () => {
         {()=>(
           <Form className='w-10/12 sm:w-7/12 md:w-6/12 lg:w-4/12 rounded-xl h-5/6 bg-white flex flex-col items-center'>
             <h1 className='text-6xl font-bold mt-4'>Sign Up</h1>
-            <div className='w-9/12 mt-8 flex flex-col items-center'>
-              <FormInput type="email" name="email"/> 
-              <FormInput type="password" name="password"/> 
-              <button type="submit"className='w-32 h-12 bg-pink-500 rounded-md text-white'>Sign Up</button>
+            <div className='w-9/12 h-full mt-8 flex flex-col items-center'>
+
+              <FormInput placeholder="Email" type="email" name="email"/> 
+              <FormInput placeholder='Password' type="password" name="password"/> 
+
             </div>
+              <button type="submit" className='w-32 h-20 mb-8 mt-auto bg-gradient-to-r from-pink-500 to-orange-500 rounded-md text-white'>Sign Up</button>
           </Form>
         )}
         </Formik> 

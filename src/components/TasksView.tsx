@@ -113,7 +113,7 @@ const TasksView: React.FC<TaskViewProps> = ({collectionID, data, setDocInViewer}
             <div className='absolute w-10/12 h-5/6 bg-white rounded-lg border border-gray-300 flex flex-col'>
                 <button className='w-12 h-12 text-3xl absolute right-4 top-4' onClick={()=>{setNewTaskMenu(false);setTaskName("")}}>X</button>
                     <input value={taskName} onChange={(e)=>setTaskName(e.target.value)}className='m-8 w-72 h-12 bg-gray-100 rounded-md border border-gray-300 px-3' placeholder="Task Name"type="text" />
-                <select onChange={(e)=>setTaskType(e.target.value)} className='mx-8 w-72 h-12 bg-gray-100 rounded-md border border-gray-300 px-2' name="" id="">
+                <select value={taskType} onChange={(e)=>setTaskType(e.target.value)} className='mx-8 w-72 h-12 bg-gray-100 rounded-md border border-gray-300 px-2' name="" id="">
                     {Array(...["Sentiment", "NER", "Similarity"]).map((i,ix)=>(
                         <option key={ix}value={i}>{i}</option>
                     ))}

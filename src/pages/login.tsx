@@ -12,6 +12,7 @@ const Login =  () => {
     const router = useRouter();
     return (
         <div className='w-full h-screen bg-gray-100 flex flex-col items-center justify-center'>
+            <button onClick={() => router.push("/")} className='absolute top-0 left-0 w-32 h-12 hover:underline transition-all text-gray-500 '>Home</button>
             <div className='w-10/12 sm:w-7/12 md:w-6/12 lg:w-4/12 h-5/6 rounded-xl bg-white flex flex-col items-center p-4'>
                 <h1 className='text-5xl font-bold'>Login</h1>
                 <Formik
