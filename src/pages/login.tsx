@@ -16,8 +16,8 @@ const Login =  () => {
                     initialValues={{email: "", password: ""}}
                     onSubmit={async (values)=>{
                         // const csrf = await getCsrfToken()
-                        const res = await signIn("credentials", {redirect:true,callbackUrl:"/dashboard", email: values.email, password: values.password})
-                        console.log(res)
+                        const res = await signIn("credentials", {redirect:false,callbackUrl:"/dashboard", email: values.email, password: values.password})
+                        console.log(res);
                     }}
                 >{({})=>(
                     <Form className='w-full h-full flex flex-col items-center'>

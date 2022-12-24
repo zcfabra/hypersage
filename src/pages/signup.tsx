@@ -3,14 +3,16 @@ import { useRouter } from 'next/router';
 import React from 'react'
 import FormInput from '../components/Form';
 import { trpc } from '../utils/trpc';
+import { toast } from 'react-toastify';
+
 
 const Signup = () => {
 
   const router = useRouter();
   const signUpMutation = trpc.auth.createNewUser.useMutation({
     onError(err){
-      let unpackErr = JSON.parse(err.message);
-      console.log("ERR HERE:",unpackErr)
+      toast(err.message, {closeOnClick:true})
+
     },
     onSuccess(){
       router.push("/login");
@@ -18,6 +20,7 @@ const Signup = () => {
   })
   return (
     <div className='w-full h-screen bg-gray-100 flex flex-col items-center justify-center'>
+
       <Formik
         initialValues={{email: "", password: ""}}
         onSubmit={(values)=>{
