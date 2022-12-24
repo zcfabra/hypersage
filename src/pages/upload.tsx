@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import UploadEngine from '../components/UploadEngine';
 import { getServerAuthSession } from '../server/common/get-server-auth-session';
 import { trpc } from '../utils/trpc';
+import { toast } from 'react-toastify';
 
 
 export interface FileContainer{
@@ -19,7 +20,7 @@ const Upload:NextPage = () => {
     const [collectionName, setCollectionName] = useState<string>("");
     const uploadMutation = trpc.collections.createCollection.useMutation({
         onError(err){
-            console.log(err);
+            toast.error(err.message);
         },
         onSuccess(res){
             console.log(res);
@@ -28,13 +29,18 @@ const Upload:NextPage = () => {
     })
  
     const handleFileUpload = (filesToUpload: FileContainer[])=>{
-        uploadMutation.mutate({name: collectionName, files: filesToUpload})
+        uploadMutation.mutate({name: collectionName, files: filesToUpload}, {
+            onError(e){
+                console.log(e);
+                toast.error(e.message);
+            }
+        })
     }
   return (
     <div className='w-full h-screen bg-gray-100 flex flex-col items-center justify-center'>
         <button onClick={()=>router.push("/dashboard")} className='absolute top-4 left-4 text-black underline font-semibold'>Back</button>
         <div className='w-8/12 h-5/6 rounded-xl bg-white p-8'>
-            <input className='w-9/12 h-12 bg-gray-100 shadow-inner rounded-md px-4 text-black' placeholder='Collection Name' type="text" value={collectionName} onChange={(e)=>setCollectionName(e.target.value)}/>
+            <input className='w-9/12 h-12 bg-gray-100 shadow-inner rounded-md px-4 mb-4 text-black' placeholder='Collection Name' type="text" value={collectionName} onChange={(e)=>setCollectionName(e.target.value)}/>
            <UploadEngine passedMutation={handleFileUpload}/>
         </div>
 

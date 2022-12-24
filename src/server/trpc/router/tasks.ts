@@ -3,6 +3,7 @@ import { TbSalt } from "react-icons/tb";
 import { z } from "zod";
 import { trpc } from "../../../utils/trpc";
 import { protectedProcedure, router } from "../trpc";
+import { Prisma } from "@prisma/client";
 
 
 function timeout(ms: number) {
@@ -57,6 +58,26 @@ export interface SentimentTable {
 
 
 export const tasksRouter = router({
+    checkForCollection: protectedProcedure.input(z.object({collectionID: z.string(), name: z.string()})).mutation(async({ctx, input})=>{
+
+
+            const taskAlreadyExisting = await ctx.prisma.task.findFirst({ where: { name: input.name, collectionID: input.collectionID } });
+
+            if (taskAlreadyExisting != null){
+                // console.log("ERRR", e)
+                    throw new TRPCError({
+                        code: "BAD_REQUEST",
+                        message: "A task with that name already exists"
+                    });
+                
+            } else {
+            return true;
+        }
+
+        
+
+    
+    }),
     getTasksForCollection: protectedProcedure.input(z.object({collectionID: z.string()})).query(async ({ctx, input})=>{
         const tasks = await ctx.prisma.task.findMany({where: {collectionID: input.collectionID}, include:{
             filesToInclude: {select:{file:{select:{name: true,id:true}}}}
@@ -68,6 +89,8 @@ export const tasksRouter = router({
     }),
 
     createTask: protectedProcedure.input(z.object({collectionID: z.string(), filesToInclude: z.string().array(), name: z.string(),type: z.string()})).mutation(async({ctx, input})=>{
+      
+        
         const task = await ctx.prisma.task.create({data:
             {
                 name: input.name,

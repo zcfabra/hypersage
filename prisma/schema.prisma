@@ -83,7 +83,7 @@ model File{
 
 model Collection{
   id String @id @default(cuid())
-  name String
+  name String @unique
   files File[]
   numFiles Int
   dateCreated DateTime @default(now())

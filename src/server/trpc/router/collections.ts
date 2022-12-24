@@ -1,4 +1,4 @@
-import { Collection, File } from "@prisma/client";
+import { Collection, File, Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { use } from "react";
 import { string, z, ZodNumber } from "zod";
@@ -40,19 +40,32 @@ export const collectionsRouter = router({
         console.log(input);
         const user = ctx.session.user;
         if (!user){
-            throw new TRPCError({code: "BAD_REQUEST", message: "For some reason, invalid session (but passed auth checks)"});
+            throw new TRPCError({code: "BAD_REQUEST", message: "For some reason, invalid session"});
         }
-        const collection = await ctx.prisma.collection.create({data: {
-            name: input.name,
-            files: {create: input.files.map((i)=>({
-                name: i.name,
-                size: i.size,
-                text: i.text,
-                type: i.type,
-            })) },
-            numFiles: input.files.length,
-            owner: {connect:{ email: user.email!}}} 
-        });
+        let collection;
+        try {
+
+            collection = await ctx.prisma.collection.create({data: {
+                name: input.name,
+                files: {create: input.files.map((i)=>({
+                    name: i.name,
+                    size: i.size,
+                    text: i.text,
+                    type: i.type,
+                })) },
+                numFiles: input.files.length,
+                owner: {connect:{ email: user.email!}}} 
+            });
+        } catch (e){
+            if (e instanceof Prisma.PrismaClientKnownRequestError){
+                if (e.code == "P2002"){
+                    throw new TRPCError({
+                        code: "INTERNAL_SERVER_ERROR",
+                        message: "A collection with that name already exists" ,
+                    });
+                }
+            }
+        }
         console.log("CREATED: ", collection);
 
         if (!collection){

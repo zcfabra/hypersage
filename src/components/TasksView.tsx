@@ -7,6 +7,7 @@ import { FileContainer } from '../pages/upload';
 import { AppRouter } from '../server/trpc/router/_app';
 import { trpc } from '../utils/trpc'
 import TaskViewer from './TaskViewer';
+import { toast } from 'react-toastify';
 interface TaskViewProps {
     collectionID: string,
     data: FileContainer[],
@@ -22,9 +23,11 @@ const TasksView: React.FC<TaskViewProps> = ({collectionID, data, setDocInViewer}
 
     const trpcContext = trpc.useContext();
     const tasks = trpc.tasks.getTasksForCollection.useQuery({collectionID: collectionID});
+    const checkForTask = trpc.tasks.checkForCollection.useMutation();
     const createTaskMutation = trpc.tasks.createTask.useMutation({
         onSuccess(res){
-            console.log("RES:",res)
+            // console.log("RES:",res)
+            setTaskName("");
             tasks.refetch();
         }
     })
@@ -38,11 +41,14 @@ const TasksView: React.FC<TaskViewProps> = ({collectionID, data, setDocInViewer}
         setSelectedFiles(prev=>{
             const copy = [...prev]
             copy[ix] = !prev[ix];
-            return [...copy]
+            return [...copy];
         })
     }
 
-  const handleCreateTask = ()=>{
+  const handleCreateTask = async ()=>{
+
+
+
     let filesToInclude = [];
     for (let [ix, file] of data.entries()){
         if (selectedFiles[ix]){
@@ -58,17 +64,38 @@ const TasksView: React.FC<TaskViewProps> = ({collectionID, data, setDocInViewer}
         type: taskType,
         name: taskName
     } as inferProcedureInput<AppRouter["tasks"]["createTask"]>
-    console.log(out);
-    flushSync(()=>{
-        setNewTaskMenu(false);
 
-    });
-    trpcContext.tasks.getTasksForCollection.setData({collectionID:collectionID}, (old)=>[...old!, {...out, id: "TBD", type: taskType, collectionID: collectionID, similarities: null, name: taskName, taskData:null, filesToInclude: []}]);
-
+    let hasError;
     
+    let res = await checkForTask.mutateAsync({collectionID: collectionID, name: taskName}, {
+        onError(err){
+            console.log(err)
+            toast.error(err.message);
+            hasError = true;
+            return;
+        }
+     }).catch((e)=>{
+        // console.log(e);
+     })
+   
 
-    createTaskMutation.mutateAsync(out);
+    if (hasError){
+        // console.log("ERRRP:",checkForTask.error)
+        return;
+    } else {
 
+        flushSync(()=>{
+            setNewTaskMenu(false);
+        })
+    }
+    
+    trpcContext.tasks.getTasksForCollection.setData({collectionID:collectionID}, (old)=>[...old!, {...out, id: "TBD", type: taskType, collectionID: collectionID, similarities: null, name: taskName, taskData:null, filesToInclude: []}]);
+      createTaskMutation.mutate(out, {
+          onError(err) {
+              toast.error(err.message);
+          },
+ 
+      });
   };
   const deleteTaskMutation = trpc.tasks.deleteTask.useMutation({
     onSuccess(){
@@ -84,7 +111,7 @@ const TasksView: React.FC<TaskViewProps> = ({collectionID, data, setDocInViewer}
     <div className='w-full h-screen flex flex-col items-center justify-center'>
         {newTaskMenu ?
             <div className='absolute w-10/12 h-5/6 bg-white rounded-lg border border-gray-300 flex flex-col'>
-                <button className='w-12 h-12 text-3xl absolute right-4 top-4' onClick={()=>setNewTaskMenu(false)}>X</button>
+                <button className='w-12 h-12 text-3xl absolute right-4 top-4' onClick={()=>{setNewTaskMenu(false);setTaskName("")}}>X</button>
                     <input value={taskName} onChange={(e)=>setTaskName(e.target.value)}className='m-8 w-72 h-12 bg-gray-100 rounded-md border border-gray-300 px-3' placeholder="Task Name"type="text" />
                 <select onChange={(e)=>setTaskType(e.target.value)} className='mx-8 w-72 h-12 bg-gray-100 rounded-md border border-gray-300 px-2' name="" id="">
                     {Array(...["Sentiment", "NER", "Similarity"]).map((i,ix)=>(

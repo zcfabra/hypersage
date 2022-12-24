@@ -11,7 +11,17 @@ const Signup = () => {
   const router = useRouter();
   const signUpMutation = trpc.auth.createNewUser.useMutation({
     onError(err){
-      toast(err.message, {closeOnClick:true})
+      let error;
+      if (err.message.includes("[") || err.message.includes("{")){
+        error = JSON.parse(err.message);
+        for (let err_message of error){
+          toast.error(err_message["message"], {closeOnClick: true});
+        }
+      } else {
+
+        toast.error(err.message, {closeOnClick:true})
+      }
+
 
     },
     onSuccess(){

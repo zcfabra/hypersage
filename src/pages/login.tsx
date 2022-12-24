@@ -6,8 +6,10 @@ import { router } from '../server/trpc/trpc'
 import { useRouter } from 'next/router'
 import { GetServerSidePropsContext } from 'next'
 import { getServerAuthSession } from '../server/common/get-server-auth-session'
+import { toast } from 'react-toastify'
 
 const Login =  () => {
+    const router = useRouter();
     return (
         <div className='w-full h-screen bg-gray-100 flex flex-col items-center justify-center'>
             <div className='w-10/12 sm:w-7/12 md:w-6/12 lg:w-4/12 h-5/6 rounded-xl bg-white flex flex-col items-center p-4'>
@@ -16,8 +18,17 @@ const Login =  () => {
                     initialValues={{email: "", password: ""}}
                     onSubmit={async (values)=>{
                         // const csrf = await getCsrfToken()
-                        const res = await signIn("credentials", {redirect:false,callbackUrl:"/dashboard", email: values.email, password: values.password})
-                        console.log(res);
+                        const res = await signIn("credentials", {redirect:false,callbackUrl:"/dashboard", email: values.email, password: values.password});
+                        if (res!.ok){
+                            router.push("/dashboard");
+                        } else {
+                            console.log( res!.error);
+
+                            if (res!.error == "CredentialsSignin"){
+                                toast.error("Incorrect credentials", {closeOnClick: true})
+                            }
+                        }
+
                     }}
                 >{({})=>(
                     <Form className='w-full h-full flex flex-col items-center'>

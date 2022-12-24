@@ -39,8 +39,7 @@ const UploadEngine: React.FC<UploadEngineProps> = ({passedMutation}) => {
         setFilesToUpload(out);
     }
   return (
-    <div className='w-full h-full flex flex-col'>
-        <span>Upload</span>
+    <div className='w-full h-full flex flex-col space-y-4'>
         <input multiple type="file" onChange={handleFileLoad} />
         {filesToUpload.length > 0 && <button onClick={()=>passedMutation(filesToUpload)} className='btn-primary'>Upload</button> }
 
