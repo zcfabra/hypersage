@@ -1,8 +1,6 @@
-import { Collection, File, Prisma } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
-import { use } from "react";
-import { string, z, ZodNumber } from "zod";
-import { getServerAuthSession } from "../../common/get-server-auth-session";
+import { z } from "zod";
 import { protectedProcedure, router } from "../trpc";
 
 const fileArrayValidator = z.object({type: z.string(), size:z.number(), name: z.string(), text: z.string()}).array()

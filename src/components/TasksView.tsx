@@ -1,13 +1,12 @@
 import { inferProcedureInput } from '@trpc/server';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { flushSync } from 'react-dom';
-import { BsMenuButton } from 'react-icons/bs';
+import { toast } from 'react-toastify';
 import { FileContainer } from '../pages/upload';
 import { AppRouter } from '../server/trpc/router/_app';
-import { trpc } from '../utils/trpc'
+import { trpc } from '../utils/trpc';
 import TaskViewer from './TaskViewer';
-import { toast } from 'react-toastify';
 interface TaskViewProps {
     collectionID: string,
     data: FileContainer[],
@@ -49,8 +48,8 @@ const TasksView: React.FC<TaskViewProps> = ({collectionID, data, setDocInViewer}
 
 
 
-    let filesToInclude = [];
-    for (let [ix, file] of data.entries()){
+    const filesToInclude = [];
+    for (const [ix, file] of data.entries()){
         if (selectedFiles[ix]){
             filesToInclude.push(file.id!);
         }
@@ -58,7 +57,7 @@ const TasksView: React.FC<TaskViewProps> = ({collectionID, data, setDocInViewer}
 
 
 
-    let out = {
+    const out = {
         filesToInclude: filesToInclude,
         collectionID: collectionID,
         type: taskType,
@@ -67,7 +66,7 @@ const TasksView: React.FC<TaskViewProps> = ({collectionID, data, setDocInViewer}
 
     let hasError;
     
-    let res = await checkForTask.mutateAsync({collectionID: collectionID, name: taskName}, {
+    const res = await checkForTask.mutateAsync({collectionID: collectionID, name: taskName}, {
         onError(err){
             console.log(err)
             toast.error(err.message);

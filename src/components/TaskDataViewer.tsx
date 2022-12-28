@@ -1,6 +1,5 @@
-import { File } from '@prisma/client';
-import React from 'react'
-import { NERTable, SentimentTable, SimilarityTable } from '../server/trpc/router/tasks'
+import React from 'react';
+import { NERTable, SentimentTable, SimilarityTable } from '../server/trpc/router/tasks';
 import HighlightedDocViewer from './HighlightedDocViewer';
 type ValueOf<T> = T[keyof T];
 export type NERTableItem = ValueOf<NERTable>;
@@ -26,8 +25,8 @@ const TaskDataViewer: React.FC<TaskDataViewerProps> = ({data, type, fileID}) => 
 
 
     {
-        Object.keys((data as SimilarityTableItem).similarities).map((i)=>(
-        <div className='w-full h-16 border-b border-gray-300 flex'>
+        Object.keys((data as SimilarityTableItem).similarities).map((i, ix)=>(
+        <div className='w-full h-16 border-b border-gray-300 flex' key={ix}>
             <div className='w-6/12 h-full flex flex-row items-center px-8'>
                 {(data as SimilarityTableItem).similarities[i as keyof object]!.name}
             </div>

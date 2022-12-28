@@ -1,8 +1,5 @@
 import { Task } from '@prisma/client';
-import { inferProcedureOutput } from '@trpc/server';
-import React, { useEffect, useState } from 'react'
-import { NERTable, SentimentTable, SimilarityTable } from '../server/trpc/router/tasks';
-import { AppRouter } from '../server/trpc/router/_app';
+import React, { useEffect, useState } from 'react';
 import TaskDataViewer, { NERTableItem, SentimentTableItem, SimilarityTableItem } from './TaskDataViewer';
 
 interface TaskViewerProps{
@@ -31,7 +28,7 @@ const TaskViewer: React.FC<TaskViewerProps> = ({setSelectedTask, setDocInViewer,
         </div>
         <div className='w-full h-full flex-1 rounded-b-xl overflow-y-auto '>
            {showTaskDataForFile==null ? data.filesToInclude.map((i,ix)=>(
-            <div onClick={()=>setShowTaskDataForFile(i.file.id)} className='w-full h-16 border-b border-gray-300 flex flex-row'>
+            <div key={ix}onClick={()=>setShowTaskDataForFile(i.file.id)} className='w-full h-16 border-b border-gray-300 flex flex-row'>
                 <div className='w-4/12 h-full flex flex-row items-center px-8'>
                     <span>{i.file.name}</span>
                 </div>

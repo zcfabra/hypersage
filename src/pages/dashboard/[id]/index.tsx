@@ -1,14 +1,13 @@
-import { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next'
+import { GetServerSidePropsContext, NextPage } from 'next'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import { useState } from 'react'
+import { BsLightningCharge as Tasks } from "react-icons/bs"
+import { TbFileAnalytics as Files, TbSearch as Search } from "react-icons/tb"
+import DocViewer from '../../../components/DocViewer'
+import FilesView from '../../../components/FilesView'
+import SearchView from '../../../components/SearchView'
 import { getServerAuthSession } from '../../../server/common/get-server-auth-session'
 import { trpc } from '../../../utils/trpc'
-import {TbSearch as Search, TbFileAnalytics as Files, TbChartInfographic as Visualize} from "react-icons/tb"
-import {BsLightningCharge as Tasks} from "react-icons/bs"
-import FilesView from '../../../components/FilesView'
-import { FileContainer } from '../../upload'
-import DocViewer from '../../../components/DocViewer'
-import SearchView from '../../../components/SearchView'
 
 import TasksView from '../../../components/TasksView'
 

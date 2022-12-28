@@ -1,6 +1,5 @@
 import { Task } from '@prisma/client'
 import React from 'react'
-import { FileContainer } from '../pages/upload'
 import { trpc } from '../utils/trpc'
 
 interface DocViewerProps{

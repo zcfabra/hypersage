@@ -1,8 +1,6 @@
-import { File, Task } from '@prisma/client'
+import { File } from '@prisma/client'
 import React from 'react'
-import { FileContainer } from '../pages/upload'
 import { trpc } from '../utils/trpc'
-import { truncate } from 'fs'
 
 interface FileTableProps{
     data: (File)[],

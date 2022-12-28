@@ -1,13 +1,10 @@
 import { type NextPage } from "next";
 
 
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 
-import { trpc } from "../utils/trpc";
 import { useRouter } from "next/router";
-import { getServerAuthSession } from "../server/common/get-server-auth-session";
-import Head from "next/head";
-import { ToastContainer } from "react-toastify";
+import { trpc } from "../utils/trpc";
 
 
 const Home: NextPage = () => {

@@ -1,12 +1,9 @@
-import { getCsrfToken, signIn } from 'next-auth/react'
-import React from 'react'
-import { trpc } from '../utils/trpc'
 import { Field, Form, Formik } from 'formik'
-import { router } from '../server/trpc/trpc'
-import { useRouter } from 'next/router'
 import { GetServerSidePropsContext } from 'next'
-import { getServerAuthSession } from '../server/common/get-server-auth-session'
+import { signIn } from 'next-auth/react'
+import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
+import { getServerAuthSession } from '../server/common/get-server-auth-session'
 
 const Login =  () => {
     const router = useRouter();

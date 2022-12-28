@@ -1,7 +1,6 @@
-import { UseMutateFunction } from '@tanstack/react-query';
 import mammoth from 'mammoth';
-import React, { useState } from 'react'
-import { FileContainer } from '../pages/upload'
+import React, { useState } from 'react';
+import { FileContainer } from '../pages/upload';
 
 interface UploadEngineProps{
     passedMutation: (filesToUpload: FileContainer[]) => void,
@@ -11,11 +10,11 @@ const UploadEngine: React.FC<UploadEngineProps> = ({passedMutation}) => {
     const [filesToUpload, setFilesToUpload] = useState<FileContainer[]>([]);
     const handleFileLoad = async (e: React.ChangeEvent<HTMLInputElement>)=>{
         console.log(e.target.files);
-        let out = []
+        const out = [];
 
         if (e.target.files){
 
-            for (let file of e.target.files){
+            for (const file of e.target.files){
                 console.log(file.type);
                 let extracted_text;
                 if (file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ){

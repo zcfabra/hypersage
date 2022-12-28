@@ -1,9 +1,7 @@
 import { TRPCError } from "@trpc/server";
-import { TbSalt } from "react-icons/tb";
+import { env } from "process";
 import { z } from "zod";
-import { trpc } from "../../../utils/trpc";
 import { protectedProcedure, router } from "../trpc";
-import { Prisma } from "@prisma/client";
 
 
 function timeout(ms: number) {
@@ -42,11 +40,11 @@ export interface NERTable{
             text: string,
         }[]
     }
-};
+}
 
 export interface SentimentTable {
     [key:string]:{
-        sentiment: String,
+        sentiment: string,
         score: number,
         neg_words: string[],
         pos_words:string[],
@@ -110,7 +108,7 @@ export const tasksRouter = router({
         });
         console.log("TASK:", task);
 
-        const res = await fetch(`http://localhost:5000/tasks/${task.type}`, {
+        const res = await fetch(`${env.SERVICE_URL}/tasks/${task.type}`, {
             method: "POST",  
             headers: {
                 "Content-Type": "application/json"
@@ -120,10 +118,10 @@ export const tasksRouter = router({
 
         console.log("RET FROM PYTHON",res);
 
-        let unpack = await res.json();
+        const unpack = await res.json();
         console.log("UNPACK",unpack)
 
-        let addToTask = await ctx.prisma.task.update({
+        const addToTask = await ctx.prisma.task.update({
             where:{
                 id: task.id,
             },

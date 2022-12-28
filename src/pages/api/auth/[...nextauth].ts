@@ -2,12 +2,9 @@ import NextAuth, { type NextAuthOptions } from "next-auth";
 // Prisma adapter for NextAuth, optional and can be removed
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
-import { env } from "../../../env/server.mjs";
-import { prisma } from "../../../server/db/client";
+import argon2 from "argon2";
 import Credentials from "next-auth/providers/credentials";
-import argon2 from "argon2"
-import Email from "next-auth/providers/email.js";
-import { getServerAuthSession } from "../../../server/common/get-server-auth-session.js";
+import { prisma } from "../../../server/db/client";
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -33,13 +30,13 @@ export const authOptions: NextAuthOptions = {
         password: {label: "Password", type: "password"}
       },
       async authorize(credentials){
-        console.log(credentials)
+        // console.log(credentials)
         const user = await prisma.user.findUnique({where:{email: credentials?.email}});
-        console.log("USER: ",user)
+        // console.log("USER: ",user)
         if (!user){
           return null
         } 
-        const isPasswordValid = await argon2.verify(user.password, credentials?.password!);
+        const isPasswordValid = await argon2.verify(user.password, credentials?.password as string);
         if (!isPasswordValid){
             return null 
         }

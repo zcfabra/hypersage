@@ -1,11 +1,10 @@
-import { GetServerSidePropsContext, NextPage } from 'next'
+import { GetServerSidePropsContext, NextPage } from 'next';
 import { signOut } from 'next-auth/react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React from 'react'
+import React from 'react';
+import { MdDelete } from "react-icons/md";
 import { getServerAuthSession } from '../../server/common/get-server-auth-session';
 import { trpc } from '../../utils/trpc';
-import {MdDelete} from "react-icons/md"
 
 const Dashboard: NextPage = () => {
     

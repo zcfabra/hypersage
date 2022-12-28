@@ -1,9 +1,8 @@
-import { Field, Form, Formik } from 'formik'
+import { Form, Formik } from 'formik';
 import { useRouter } from 'next/router';
-import React from 'react'
+import { toast } from 'react-toastify';
 import FormInput from '../components/Form';
 import { trpc } from '../utils/trpc';
-import { toast } from 'react-toastify';
 
 
 const Signup = () => {
@@ -14,7 +13,7 @@ const Signup = () => {
       let error;
       if (err.message.includes("[") || err.message.includes("{")){
         error = JSON.parse(err.message);
-        for (let err_message of error){
+        for (const err_message of error){
           toast.error(err_message["message"], {closeOnClick: true});
         }
       } else {
