@@ -10,10 +10,10 @@ export const authRouter = router({
   getSecretMessage: protectedProcedure.query(() => {
     return "you can now see this secret message!";
   }),
-  createNewUser: publicProcedure.input(z.object({email: z.string().email({message: "Must be a valid email"}), password: z.string().min(3, {message: "Password must be 3 or more characters"})})).mutation(async ({input})=>{
+  createNewUser: publicProcedure.input(z.object({email: z.string().email({message: "Must be a valid email"}), password: z.string().min(3, {message: "Password must be 3 or more characters"})})).mutation(async ({input, ctx})=>{
     const hashedPassword = await argon2.hash(input.password);
 
-    const alreadyExists = await prisma?.user.findUnique({where:{email: input.email}});
+    const alreadyExists = await ctx.prisma.user.findUnique({where:{email: input.email}});
 
     if (alreadyExists){
       throw new TRPCError({
