@@ -3,6 +3,8 @@ import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import FormInput from '../components/Form';
 import { trpc } from '../utils/trpc';
+import { GetServerSidePropsContext } from 'next';
+import { getServerAuthSession } from '../server/common/get-server-auth-session';
 
 
 const Signup = () => {
@@ -55,4 +57,22 @@ const Signup = () => {
 )
 }
 
-export default Signup
+export default Signup;
+
+export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+  const amIAuthed = await getServerAuthSession(ctx);
+
+  if (amIAuthed && amIAuthed.user) {
+    return {
+      redirect: {
+        destination: "/dashboard",
+        permanent: false,
+      }
+    }
+  } else {
+    return {
+      props: {}
+    }
+  }
+
+}
