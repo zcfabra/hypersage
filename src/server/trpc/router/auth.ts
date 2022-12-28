@@ -22,7 +22,7 @@ export const authRouter = router({
       })
     }
 
-    const user = await prisma?.user.create({data:{email: input.email, password: hashedPassword}});
+    const user = await ctx.prisma.user.create({data:{email: input.email, password: hashedPassword}});
 
     if (!user){
       return false;
