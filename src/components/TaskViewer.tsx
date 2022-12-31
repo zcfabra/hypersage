@@ -29,7 +29,7 @@ const TaskViewer: React.FC<TaskViewerProps> = ({setSelectedTask, setDocInViewer,
         <div className='w-full h-full flex-1 rounded-b-xl overflow-y-auto '>
            {showTaskDataForFile==null ? data.filesToInclude.map((i,ix)=>(
             <div key={ix}onClick={()=>setShowTaskDataForFile(i.file.id)} className='w-full h-16 border-b border-gray-300 flex flex-row'>
-                <div className='w-4/12 h-full flex flex-row items-center px-8'>
+                <div className='w-4/12 h-full flex flex-row items-center px-8 truncate'>
                     <span>{i.file.name}</span>
                 </div>
                 <div className='w-4/12 h-full text-gray-500 flex flex-row items-center p-8 overflow-hidden'>
