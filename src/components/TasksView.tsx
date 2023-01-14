@@ -26,7 +26,7 @@ const TasksView: React.FC<TaskViewProps> = ({collectionID, data, setDocInViewer}
     const [client, setClient] = useState<Paho.Client>();
     useEffect(()=>{
         console.log(env.NEXT_PUBLIC_MQ_URL)
-        const cl = new Paho.Client(env.NEXT_PUBLIC_MQ_URL, 15675, "/ws", "myclientid_" + String(Math.random() * 100));
+        const cl = new Paho.Client(env.NEXT_PUBLIC_MQ_URL, 15675, "/wss", "myclientid_" + String(Math.random() * 100));
         cl.onMessageArrived = (msg) => {
             const ob = JSON.parse(msg.payloadString);
             // console.log(msg.payloadString)
