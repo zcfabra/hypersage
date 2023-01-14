@@ -61,7 +61,7 @@ const TasksView: React.FC<TaskViewProps> = ({collectionID, data, setDocInViewer}
     });
     useEffect(() => {
         if (tasks.data){
-            for (let each of tasks.data) {
+            for (const each of tasks.data) {
                 if (each.taskData == null){
                     setShouldRefetch(true);
                     return;
