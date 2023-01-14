@@ -90,7 +90,7 @@ export const tasksRouter = router({
 
     createTask: protectedProcedure.input(z.object({collectionID: z.string(), filesToInclude: z.string().array(), name: z.string(),type: z.string()})).mutation(async({ctx, input})=>{
         
-        const taskAlreadyExisting = await ctx.prisma.task.findFirst({where: {collectionID: input.collectionID}});
+        const taskAlreadyExisting = await ctx.prisma.task.findFirst({where: {collectionID: input.collectionID, name: input.name}});
         if (taskAlreadyExisting){
             throw new TRPCError({
                 code: "BAD_REQUEST", 
