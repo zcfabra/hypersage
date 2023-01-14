@@ -24,43 +24,58 @@ const TasksView: React.FC<TaskViewProps> = ({collectionID, data, setDocInViewer}
     const [selectedTask, setSelectedTask] = useState<number | null>(null);
     // console.log(router)
     const [client, setClient] = useState<Paho.Client>();
-    useEffect(()=>{
-        console.log(env.NEXT_PUBLIC_MQ_URL)
-        const cl = new Paho.Client(env.NEXT_PUBLIC_MQ_URL, 15675, "/wss", "myclientid_" + String(Math.random() * 100));
-        cl.onMessageArrived = (msg) => {
-            const ob = JSON.parse(msg.payloadString);
-            // console.log(msg.payloadString)
-            if (ob["status"] == true){
-                tasks.refetch();
-            }
-        }
+    // useEffect(()=>{
+    //     console.log(env.NEXT_PUBLIC_MQ_URL)
+    //     const cl = new Paho.Client(env.NEXT_PUBLIC_MQ_URL, 15675, "/wss", "myclientid_" + String(Math.random() * 100));
+    //     cl.onMessageArrived = (msg) => {
+    //         const ob = JSON.parse(msg.payloadString);
+    //         // console.log(msg.payloadString)
+    //         if (ob["status"] == true){
+    //             tasks.refetch();
+    //         }
+    //     }
 
-        cl.connect({
-            useSSL: true,
-            reconnect: true,
-            userName: env.NEXT_PUBLIC_MQ_USERNAME,
-            password: env.NEXT_PUBLIC_MQ_PASSWORD,
-            onSuccess: () => {
-                // console.log("CONNEcTED");
-                cl.subscribe(collectionID, {qos: 1});
-            },
-            onFailure: (e)=>{
-                console.log("FAILED TO CONNECT: ",e)
-            }
-        });
+    //     cl.connect({
+    //         useSSL: true,
+    //         reconnect: true,
+    //         userName: env.NEXT_PUBLIC_MQ_USERNAME,
+    //         password: env.NEXT_PUBLIC_MQ_PASSWORD,
+    //         onSuccess: () => {
+    //             // console.log("CONNEcTED");
+    //             cl.subscribe(collectionID, {qos: 1});
+    //         },
+    //         onFailure: (e)=>{
+    //             console.log("FAILED TO CONNECT: ",e)
+    //         }
+    //     });
  
 
-    }, [])
+    // }, [])
 
+   
 
+    const [shouldRefetch, setShouldRefetch] = useState(false);
     const trpcContext = trpc.useContext();
-    const tasks = trpc.tasks.getTasksForCollection.useQuery({collectionID: collectionID});
+    const tasks = trpc.tasks.getTasksForCollection.useQuery({collectionID: collectionID}, {
+        refetchInterval: shouldRefetch?  5000 : undefined,
+    });
+    useEffect(() => {
+        if (tasks.data){
+            for (let each of tasks.data) {
+                if (each.taskData == null){
+                    setShouldRefetch(true);
+                    return;
+                } 
+            }
+            setShouldRefetch(false);
+        }
+        
+    }, [tasks])
     const checkForTask = trpc.tasks.checkForCollection.useMutation();
     const createTaskMutation = trpc.tasks.createTask.useMutation({
         onSuccess(res){
             // console.log("RES:",res)
             setTaskName("");
-
             // tasks.refetch();
         }
     })
