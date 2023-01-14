@@ -109,14 +109,14 @@ export const tasksRouter = router({
             include: {filesToInclude: {include:{file: true}}}
         });
         console.log("TASK:", task);
-        amqp.connect(`amqps://${env.MQ_URL}`, (err, connection: amqp.Connection) => {
+        amqp.connect(`amqp://${env.MQ_URL}`, (err, connection: amqp.Connection) => {
             if (err) {
-                console.log(err)
+                console.log("OUCH",err)
                 throw (err);
             }
             connection.createChannel((err, channel) => {
                 if (err){
-                    console.log(err)
+                    console.log("OUCH ON CREATE CHANNEL:",err)
                     throw(err);
                 }
 
