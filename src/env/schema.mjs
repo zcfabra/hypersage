@@ -20,6 +20,8 @@ export const serverSchema = z.object({
     process.env.VERCEL ? z.string() : z.string().url(),
   ),
   MQ_URL: z.string(),
+  MQ_USERNAME: z.string(),
+  MQ_PASSWORD: z.string(),
   
 });
 

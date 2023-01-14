@@ -109,7 +109,7 @@ export const tasksRouter = router({
             include: {filesToInclude: {include:{file: true}}}
         });
         console.log("TASK:", task);
-        amqp.connect(`amqp://${env.MQ_URL}`, (err, connection: amqp.Connection) => {
+        amqp.connect({hostname: env.MQ_URL, username: env.MQ_USERNAME, password: env.MQ_PASSWORD, port: 5672, vhost: "/", protocol: "amqp"}, {}, (err, connection: amqp.Connection) => {
             if (err) {
                 console.log("OUCH",err);
                 throw (err);
