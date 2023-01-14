@@ -36,6 +36,7 @@ const TasksView: React.FC<TaskViewProps> = ({collectionID, data, setDocInViewer}
         }
 
         cl.connect({
+            useSSL: true,
             reconnect: true,
             onSuccess: () => {
                 // console.log("CONNEcTED");
