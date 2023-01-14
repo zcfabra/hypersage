@@ -2,7 +2,7 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { protectedProcedure, router } from "../trpc";
 import * as amqp from "amqplib/callback_api";
-import { env } from "process";
+import { env } from "../../../env/server.mjs";
 
 
 
@@ -109,32 +109,49 @@ export const tasksRouter = router({
             include: {filesToInclude: {include:{file: true}}}
         });
         console.log("TASK:", task);
-        amqp.connect({hostname: env.MQ_URL, username: env.MQ_USERNAME, password: env.MQ_PASSWORD, port: 5672, vhost: "/", protocol: "amqp"}, {}, (err, connection: amqp.Connection) => {
-            if (err) {
-                console.log("OUCH",err);
-                throw (err);
-            }
-            connection.createChannel((err, channel) => {
-                if (err){
-                    console.log("OUCH ON CREATE CHANNEL:",err)
-                    throw(err);
-                }
+        // amqp.connect({hostname: env.MQ_URL, username: env.MQ_USERNAME, password: env.MQ_PASSWORD, port: 5672, vhost: "/", protocol: "amqp"}, {}, (err, connection: amqp.Connection) => {
+        //     if (err) {
+        //         console.log("OUCH",err);
+        //         throw (err);
+        //     }
+        //     connection.createChannel((err, channel) => {
+        //         if (err){
+        //             console.log("OUCH ON CREATE CHANNEL:",err)
+        //             throw(err);
+        //         }
 
-                const msg = JSON.stringify({task: task.id, taskType: task.type , data: task.filesToInclude});
-                const q = "tasks";
+        //         const msg = JSON.stringify({task: task.id, taskType: task.type , data: task.filesToInclude});
+        //         const q = "tasks";
 
-                channel.assertQueue(q, {
-                    durable:true 
-                });
+        //         channel.assertQueue(q, {
+        //             durable:true
+        //         });
 
-                channel.sendToQueue(q, Buffer.from(msg),  {deliveryMode: 2,  replyTo: input.collectionID});
-                console.log("[x] Sent");
+        //         channel.sendToQueue(q, Buffer.from(msg),  {deliveryMode: 2,  replyTo: input.collectionID});
+        //         console.log("[x] Sent");
 
-                    connection.close();
+        //             connection.close();
 
-            });
-        })
-        return task.id;
+        //     });
+        // })
+
+    
+        const msg = JSON.stringify({task: task.id, replyTo: task.collectionID, taskType: task.type , data: task.filesToInclude});
+        const res = await fetch(env.MQ_URL+":5000/task", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: msg
+        } );
+        console.log("RET FROM PYTHON RAW", res)
+
+        const out = await res.json();
+        console.log("RET FROM PYTHON %s",out);
+        if (out["status"]){
+            return true;
+        }
+
+
+
 
 
 
