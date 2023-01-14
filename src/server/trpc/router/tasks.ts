@@ -58,26 +58,26 @@ export interface SentimentTable {
 
 
 export const tasksRouter = router({
-    checkForCollection: protectedProcedure.input(z.object({collectionID: z.string(), name: z.string()})).mutation(async({ctx, input})=>{
+    // checkForCollection: protectedProcedure.input(z.object({collectionID: z.string(), name: z.string()})).mutation(async({ctx, input})=>{
 
 
-            const taskAlreadyExisting = await ctx.prisma.task.findFirst({ where: { name: input.name, collectionID: input.collectionID } });
+    //         const taskAlreadyExisting = await ctx.prisma.task.findFirst({ where: { name: input.name, collectionID: input.collectionID } });
 
-            if (taskAlreadyExisting != null){
-                // console.log("ERRR", e)
-                    throw new TRPCError({
-                        code: "BAD_REQUEST",
-                        message: "A task with that name already exists"
-                    });
+    //         if (taskAlreadyExisting != null){
+    //             // console.log("ERRR", e)
+    //                 throw new TRPCError({
+    //                     code: "BAD_REQUEST",
+    //                     message: "A task with that name already exists"
+    //                 });
                 
-            } else {
-            return true;
-        }
+    //         } else {
+    //         return true;
+    //     }
 
         
 
     
-    }),
+    // }),
     getTasksForCollection: protectedProcedure.input(z.object({collectionID: z.string()})).query(async ({ctx, input})=>{
         const tasks = await ctx.prisma.task.findMany({where: {collectionID: input.collectionID}, include:{
             filesToInclude: {select:{file:{select:{name: true,id:true}}}}

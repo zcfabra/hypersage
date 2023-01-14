@@ -71,7 +71,7 @@ const TasksView: React.FC<TaskViewProps> = ({collectionID, data, setDocInViewer}
         }
         
     }, [tasks])
-    const checkForTask = trpc.tasks.checkForCollection.useMutation();
+    // const checkForTask = trpc.tasks.checkForCollection.useMutation();
     const createTaskMutation = trpc.tasks.createTask.useMutation({
         onSuccess(res){
             // console.log("RES:",res)
@@ -115,16 +115,16 @@ const TasksView: React.FC<TaskViewProps> = ({collectionID, data, setDocInViewer}
 
     let hasError;
     
-    const res = await checkForTask.mutateAsync({collectionID: collectionID, name: taskName}, {
-        onError(err){
-            console.log(err)
-            toast.error(err.message);
-            hasError = true;
-            return;
-        }
-     }).catch((e)=>{
-        // console.log(e);
-     })
+    // const res = await checkForTask.mutateAsync({collectionID: collectionID, name: taskName}, {
+    //     onError(err){
+    //         console.log(err)
+    //         toast.error(err.message);
+    //         hasError = true;
+    //         return;
+    //     }
+    //  }).catch((e)=>{
+    //     // console.log(e);
+    //  })
    
 
     if (hasError){
