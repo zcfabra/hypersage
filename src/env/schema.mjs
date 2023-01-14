@@ -22,6 +22,7 @@ export const serverSchema = z.object({
   MQ_URL: z.string(),
   MQ_USERNAME: z.string(),
   MQ_PASSWORD: z.string(),
+  AMQP_MQ_URL: z.string(),
   
 });
 
