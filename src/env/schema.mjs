@@ -1,5 +1,5 @@
 // @ts-check
-import { z } from "zod";
+import { string, z } from "zod";
 
 /**
  * Specify your server-side environment variables schema here.
@@ -31,6 +31,8 @@ export const serverSchema = z.object({
 export const clientSchema = z.object({
   // NEXT_PUBLIC_CLIENTVAR: z.string(),
   NEXT_PUBLIC_MQ_URL: z.string(),
+  NEXT_PUBLIC_MQ_USERNAME: z.string(),
+  NEXT_PUBLIC_MQ_PASSWORD: z.string(),
 });
 
 /**
@@ -40,6 +42,8 @@ export const clientSchema = z.object({
  * @type {{ [k in keyof z.infer<typeof clientSchema>]: z.infer<typeof clientSchema>[k] | undefined }}
  */
 export const clientEnv = {
+  NEXT_PUBLIC_MQ_PASSWORD: process.env.NEXT_PUBLIC_MQ_PASSWORD,
+  NEXT_PUBLIC_MQ_USERNAME: process.env.NEXT_PUBLIC_MQ_USERNAME,
 
 
   NEXT_PUBLIC_MQ_URL: process.env.NEXT_PUBLIC_MQ_URL,
