@@ -111,10 +111,12 @@ export const tasksRouter = router({
         console.log("TASK:", task);
         amqp.connect(`amqp://${env.MQ_URL}`, (err, connection: amqp.Connection) => {
             if (err) {
+                console.log(err)
                 throw (err);
             }
             connection.createChannel((err, channel) => {
                 if (err){
+                    console.log(err)
                     throw(err);
                 }
 
