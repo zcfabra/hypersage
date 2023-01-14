@@ -43,6 +43,9 @@ const TasksView: React.FC<TaskViewProps> = ({collectionID, data, setDocInViewer}
             onSuccess: () => {
                 // console.log("CONNEcTED");
                 cl.subscribe(collectionID, {qos: 1});
+            },
+            onFailure: (e)=>{
+                console.log("FAILED TO CONNECT: ",e)
             }
         });
  
