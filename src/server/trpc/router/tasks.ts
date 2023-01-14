@@ -129,9 +129,9 @@ export const tasksRouter = router({
 
                 channel.sendToQueue(q, Buffer.from(msg),  {deliveryMode: 2,  replyTo: input.collectionID});
                 console.log("[x] Sent");
-                setTimeout(function () {
+
                     connection.close();
-                }, 500);
+
             });
         })
         return task.id;
