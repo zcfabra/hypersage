@@ -131,7 +131,6 @@ export const tasksRouter = router({
                 console.log("[x] Sent");
                 setTimeout(function () {
                     connection.close();
-                    process.exit(0)
                 }, 500);
             });
         })
