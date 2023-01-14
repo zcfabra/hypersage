@@ -29,12 +29,7 @@ const Upload:NextPage = () => {
     })
  
     const handleFileUpload = (filesToUpload: FileContainer[])=>{
-        uploadMutation.mutate({name: collectionName, files: filesToUpload}, {
-            onError(e){
-                console.log(e);
-                toast.error(e.message);
-            }
-        })
+        uploadMutation.mutate({name: collectionName, files: filesToUpload})
     }
   return (
     <div className='w-full h-screen bg-gray-100 flex flex-col items-center justify-center'>

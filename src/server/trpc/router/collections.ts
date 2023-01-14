@@ -40,7 +40,17 @@ export const collectionsRouter = router({
         if (!user){
             throw new TRPCError({code: "BAD_REQUEST", message: "For some reason, invalid session"});
         }
+
+        const collectionExists = await ctx.prisma.collection.findFirst({where:{ownerId: ctx.session.user.id, name: input.name}})
+        if (collectionExists){
+            throw new TRPCError({
+                code: "BAD_REQUEST",
+                message: "A collection with that name already exists"
+            })
+        }
+
         let collection;
+
         try {
 
             collection = await ctx.prisma.collection.create({data: {
@@ -59,7 +69,7 @@ export const collectionsRouter = router({
                 if (e.code == "P2002"){
                     throw new TRPCError({
                         code: "INTERNAL_SERVER_ERROR",
-                        message: "A collection with that name already exists" ,
+                        message: "Error creating collection" ,
                     });
                 }
             }

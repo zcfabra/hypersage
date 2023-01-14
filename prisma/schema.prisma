@@ -83,7 +83,7 @@ model File{
 
 model Collection{
   id String @id @default(cuid())
-  name String @unique
+  name String 
   files File[]
   numFiles Int
   dateCreated DateTime @default(now())
@@ -96,7 +96,7 @@ model Collection{
 
 model Task{
   id String @id @default(cuid())
-  name String @unique
+  name String 
   type String
   filesToInclude TasksToFiles[]
   collectionID String
