@@ -109,7 +109,7 @@ export const tasksRouter = router({
             include: {filesToInclude: {include:{file: true}}}
         });
         console.log("TASK:", task);
-        amqp.connect(`amqp://${env.MQ_URL}`, (err, connection: amqp.Connection) => {
+        amqp.connect(`amqps://${env.MQ_URL}`, (err, connection: amqp.Connection) => {
             if (err) {
                 console.log(err)
                 throw (err);
@@ -129,6 +129,10 @@ export const tasksRouter = router({
 
                 channel.sendToQueue(q, Buffer.from(msg),  {deliveryMode: 2,  replyTo: input.collectionID});
                 console.log("[x] Sent");
+                setTimeout(function () {
+                    connection.close();
+                    process.exit(0)
+                }, 500);
             });
         })
         return task.id;
