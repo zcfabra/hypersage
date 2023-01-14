@@ -9,13 +9,13 @@ interface UploadEngineProps{
 const UploadEngine: React.FC<UploadEngineProps> = ({passedMutation}) => {
     const [filesToUpload, setFilesToUpload] = useState<FileContainer[]>([]);
     const handleFileLoad = async (e: React.ChangeEvent<HTMLInputElement>)=>{
-        console.log(e.target.files);
+        // console.log(e.target.files);
         const out = [];
 
         if (e.target.files){
 
             for (const file of e.target.files){
-                console.log(file.type);
+                // console.log(file.type);
                 let extracted_text;
                 if (file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ){
                    extracted_text = await mammoth.extractRawText({arrayBuffer: await file.arrayBuffer()}).then(res=>res.value);
@@ -34,7 +34,7 @@ const UploadEngine: React.FC<UploadEngineProps> = ({passedMutation}) => {
             }
         }
 
-        console.log(out);
+        // console.log(out);
         setFilesToUpload(out);
     }
   return (

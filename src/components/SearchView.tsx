@@ -18,7 +18,7 @@ const SearchView: React.FC<SearchViewProps> = ({data, collectionID, setDocInView
         initialData: data ,
         enabled: false,
         onSuccess(res){
-            console.log("HI",res);
+            console.log("RET FROM SEARCH",res);
         }
     })
     const handleExecuteSearch = () =>{

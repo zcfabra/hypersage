@@ -47,7 +47,6 @@ const Signup = () => {
 
               <FormInput placeholder="Email" type="email" name="email"/> 
               <FormInput placeholder='Password' type="password" name="password"/> 
-
             </div>
               <button type="submit" className='w-32 h-20 mb-8 mt-auto bg-gradient-to-r from-pink-500 to-orange-500 rounded-md text-white'>Sign Up</button>
           </Form>

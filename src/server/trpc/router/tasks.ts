@@ -1,16 +1,18 @@
 import { TRPCError } from "@trpc/server";
-import { env } from "process";
 import { z } from "zod";
 import { protectedProcedure, router } from "../trpc";
+import * as amqp from "amqplib/callback_api";
+import { env } from "process";
 
 
-function timeout(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-async function sleep() {
-    await timeout(3000);
 
-}
+// function timeout(ms: number) {
+//     return new Promise(resolve => setTimeout(resolve, ms));
+// }
+// async function sleep() {
+//     await timeout(3000);
+
+// }
 
 export interface SimilarityTable{
   
@@ -107,38 +109,68 @@ export const tasksRouter = router({
             include: {filesToInclude: {include:{file: true}}}
         });
         console.log("TASK:", task);
-
-        const res = await fetch(`${env.SERVICE_URL}/tasks/${task.type}`, {
-            method: "POST",  
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({data: task.filesToInclude}),
-        });
-
-        console.log("RET FROM PYTHON",res);
-
-        const unpack = await res.json();
-        console.log("UNPACK",unpack)
-
-        const addToTask = await ctx.prisma.task.update({
-            where:{
-                id: task.id,
-            },
-            data: {
-                taskData: unpack
-
+        amqp.connect(`amqp://${env.MQ_URL}`, (err, connection: amqp.Connection) => {
+            if (err) {
+                throw (err);
             }
+            connection.createChannel((err, channel) => {
+                if (err){
+                    throw(err);
+                }
+
+                const msg = JSON.stringify({task: task.id, taskType: task.type , data: task.filesToInclude});
+                const q = "tasks";
+
+                channel.assertQueue(q, {
+                    durable:true 
+                });
+
+                channel.sendToQueue(q, Buffer.from(msg),  {deliveryMode: 2,  replyTo: input.collectionID});
+                console.log("[x] Sent");
+            });
         })
-        if (!addToTask){
-            throw new TRPCError({
-                code: "INTERNAL_SERVER_ERROR",
-                message: "Error updating task with computed data"
-            })
-        } else {
-            return true;
-        }
+        return task.id;
+
+
+
+
+
+
+        // const res = await fetch(`${env.SERVICE_URL}/tasks/${task.type}`, {
+        //     method: "POST",  
+        //     headers: {
+        //         "Content-Type": "application/json"
+        //     },
+        //     body: JSON.stringify({data: task.filesToInclude}),
+        // });
+
+        // console.log("RET FROM PYTHON",res);
+
+        // const unpack = await res.json();
+        // console.log("UNPACK",unpack)
+
+        // const addToTask = await ctx.prisma.task.update({
+        //     where:{
+        //         id: task.id,
+        //     },
+        //     data: {
+        //         taskData: unpack
+
+        //     }
+        // })
+        // if (!addToTask){
+        //     throw new TRPCError({
+        //         code: "INTERNAL_SERVER_ERROR",
+        //         message: "Error updating task with computed data"
+        //     })
+        // } else {
+        //     return true;
+        // }
     }),
+
+
+
+
     deleteTask: protectedProcedure.input(z.object({id: z.string()})).mutation(async ({ctx,input})=>{
         const deleted = await ctx.prisma.task.delete({where:{id: input.id}});
         if (!deleted){

@@ -14,9 +14,9 @@ import TasksView from '../../../components/TasksView'
 
 const Collection: NextPage = () => {
   const router = useRouter();
-  console.log(router);
+  // console.log(router);
   const [tab, setTab] = useState<string>(router.query.selected ? router.query.selected as string : "Files");
-  console.log(router.query.id);
+  // console.log(router.query.id);
   const [docInViewer, setDocInViewer] = useState<string| null>(null);
 
   const MENU = ["Files",
@@ -33,7 +33,7 @@ const Collection: NextPage = () => {
 
   const {data, refetch} = trpc.collections.getCollection.useQuery({id: router.query.id as string}, {enabled: router.isReady})
   const triggerRefetch = ()=>{
-    console.log("REFETCH")
+    // console.log("REFETCH")
     refetch();
   }
   return (

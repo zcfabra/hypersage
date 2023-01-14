@@ -23,7 +23,7 @@ const Upload:NextPage = () => {
             toast.error(err.message);
         },
         onSuccess(res){
-            console.log(res);
+            // console.log(res);
             router.push("/dashboard")
         }
     })

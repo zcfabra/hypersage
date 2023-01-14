@@ -13,8 +13,8 @@ interface TaskDataViewerProps{
 }
 
 const TaskDataViewer: React.FC<TaskDataViewerProps> = ({data, type, fileID}) => {
-    console.log(data);
-    console.log(fileID);
+    // console.log(data);
+    // console.log(fileID);
   return type == "Similarity" 
   ?
   <div >

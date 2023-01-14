@@ -17,9 +17,9 @@ interface TaskViewerProps{
 
 const TaskViewer: React.FC<TaskViewerProps> = ({setSelectedTask, setDocInViewer, data}) => {
     const [showTaskDataForFile, setShowTaskDataForFile] = useState<string | null>();
-    useEffect(()=>{
-        console.log("DATTA: ",data)
-    },[])
+    // useEffect(()=>{
+    //     console.log("DATTA: ",data)
+    // },[])
   return (
     <div className='w-full h-full bg-white rounded-lg border border-gray-300 flex flex-col'>
         <div className='w-full h-16 shrink-0 bg-gray-50 border-b rounded-t-lg border-gray-300 flex flex-row px-8'>

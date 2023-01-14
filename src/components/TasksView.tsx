@@ -7,6 +7,10 @@ import { FileContainer } from '../pages/upload';
 import { AppRouter } from '../server/trpc/router/_app';
 import { trpc } from '../utils/trpc';
 import TaskViewer from './TaskViewer';
+import * as Paho from "paho-mqtt"
+import { env } from '../env/client.mjs';
+// import * as mqtt from "mqtt";
+
 interface TaskViewProps {
     collectionID: string,
     data: FileContainer[],
@@ -14,11 +18,34 @@ interface TaskViewProps {
 }
 const TasksView: React.FC<TaskViewProps> = ({collectionID, data, setDocInViewer}) => {
     const [newTaskMenu, setNewTaskMenu] = useState<boolean>(false);
-    const router = useRouter();
+    // const router = useRouter();
     const [taskType, setTaskType] = useState<string>("Sentiment");
     const [taskName, setTaskName] = useState("");
     const [selectedTask, setSelectedTask] = useState<number | null>(null);
     // console.log(router)
+    const [client, setClient] = useState<Paho.Client>();
+    useEffect(()=>{
+        console.log(env.NEXT_PUBLIC_MQ_URL)
+        const cl = new Paho.Client(env.NEXT_PUBLIC_MQ_URL, 15675, "/ws", "guest");
+        cl.onMessageArrived = (msg) => {
+            const ob = JSON.parse(msg.payloadString);
+            // console.log(msg.payloadString)
+            if (ob["status"] == true){
+                tasks.refetch();
+            }
+        }
+
+        cl.connect({
+            reconnect: true,
+            onSuccess: () => {
+                // console.log("CONNEcTED");
+                cl.subscribe(collectionID, {qos: 1});
+            }
+        });
+ 
+
+    }, [])
+
 
     const trpcContext = trpc.useContext();
     const tasks = trpc.tasks.getTasksForCollection.useQuery({collectionID: collectionID});
@@ -27,15 +54,16 @@ const TasksView: React.FC<TaskViewProps> = ({collectionID, data, setDocInViewer}
         onSuccess(res){
             // console.log("RES:",res)
             setTaskName("");
-            tasks.refetch();
+
+            // tasks.refetch();
         }
     })
 
     const [selectedFiles, setSelectedFiles] = useState<boolean[]>(Array.from({length: data.length},(_, i)=>true ));
-    useEffect(()=>{
-        console.log(selectedFiles);
+    // useEffect(()=>{
+    //     console.log(selectedFiles);
 
-    },[selectedFiles])
+    // },[selectedFiles])
     const handleCheck = (ix:number)=>{
         setSelectedFiles(prev=>{
             const copy = [...prev]
@@ -104,7 +132,10 @@ const TasksView: React.FC<TaskViewProps> = ({collectionID, data, setDocInViewer}
   const handleDeleteTask = (e: React.MouseEvent<HTMLButtonElement>, id: string)=>{
     e.stopPropagation();
     deleteTaskMutation.mutate({id: id})
-  }
+  };
+
+  
+
 
   return (
     <div className='w-full h-screen flex flex-col items-center justify-center'>
@@ -163,7 +194,7 @@ const TasksView: React.FC<TaskViewProps> = ({collectionID, data, setDocInViewer}
                     <div className='w-full h-full overflow-y-auto'>
                     {
                         tasks.data && tasks.data.map((i,ix)=>(
-                            <div key={ix} onClick={()=>i.id != "TBD" && setSelectedTask(ix)} className={`h-16 ${i.id == "TBD" ? "cursor-not-allowed" : "cursor-pointer"} hover:bg-gray-50 w-full h-16 border-b border-gray-300 flex flex-row items-center`}>
+                            <div key={ix} onClick={()=>i.taskData && setSelectedTask(ix)} className={`h-16 ${i.taskData ? "cursor-pointer" : "cursor-not-allowed"} hover:bg-gray-50 w-full h-16 border-b border-gray-300 flex flex-row items-center`}>
                                 <div className='w-3/12 h-full flex flex-row items-center px-8'>
                                     <span className=''>{i.name}</span>
                                 </div>
@@ -172,7 +203,7 @@ const TasksView: React.FC<TaskViewProps> = ({collectionID, data, setDocInViewer}
                                 </div>
                                 <div className='w-3/12 ml-auto h-full flex flex-row justify-center items-center px-8'>
                                     
-                                {createTaskMutation.isLoading && (i.id == "TBD") ? <svg className="animate-spin h-5 w-5 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                {createTaskMutation.isLoading || (!i.taskData) ? <svg className="animate-spin h-5 w-5 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                 </svg> : <button onClick={(e)=>handleDeleteTask(e, i.id)} className='text-pink-500 w-32 font-semibold'>Delete</button>}

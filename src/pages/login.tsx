@@ -4,9 +4,14 @@ import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 import { getServerAuthSession } from '../server/common/get-server-auth-session'
+import { trpc } from '../utils/trpc'
 
 const Login =  () => {
     const router = useRouter();
+    // const amIAuthed = trpc.auth.getSession.useQuery();
+    // if (amIAuthed.data?.user) {
+    //     router.push("/dashboard")
+    // }
     return (
         <div className='w-full h-screen bg-gray-100 flex flex-col items-center justify-center'>
             <button onClick={() => router.push("/")} className='absolute top-0 left-0 w-32 h-12 hover:underline transition-all text-gray-500 '>Home</button>
@@ -20,7 +25,7 @@ const Login =  () => {
                         if (res!.ok){
                             router.push("/dashboard");
                         } else {
-                            console.log( res!.error);
+                            // console.log( res!.error);
 
                             if (res!.error == "CredentialsSignin"){
                                 toast.error("Incorrect credentials", {closeOnClick: true})
@@ -47,6 +52,7 @@ const Login =  () => {
 export default Login
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext){
+    // console.log("HIT",ctx.req.url)
     const amIAuthed =await getServerAuthSession(ctx);
 
     if (amIAuthed &&  amIAuthed.user){

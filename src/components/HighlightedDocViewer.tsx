@@ -30,7 +30,7 @@ const HighlightedDocViewer:React.FC<HighlightedDocViewerProps> = ({fileID, data,
         const concatted = (data as SentimentTableItem).pos_words.map((i)=>({text: i, sentiment: "POS"})).concat((data as SentimentTableItem).neg_words.map((i)=>({text: i, sentiment: "NEG"})))
         map = new Map(concatted.map((i)=>([i.text, i.sentiment])));
     }
-    console.log (map)
+    // console.log (map)
   return <div className='w-full flex flex-col p-8'>
             {fileWithText && fileWithText.data && <span dangerouslySetInnerHTML={{__html: map.size == 0 ? fileWithText.data.text! : fileWithText.data.text!.replace(matches, (matched)=>{
                 return type == "NER"
