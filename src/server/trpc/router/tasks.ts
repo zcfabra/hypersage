@@ -134,6 +134,7 @@ export const tasksRouter = router({
 
             });
         })
+        return true;
 
     
         // const msg = JSON.stringify({task: task.id, replyTo: task.collectionID, taskType: task.type , data: task.filesToInclude});
