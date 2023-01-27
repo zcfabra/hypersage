@@ -32,8 +32,8 @@ const Signup = () => {
   return (
     <div className='w-full h-screen bg-gray-100 flex flex-col items-center justify-center'>
       <button onClick={()=>router.push("/")} className='absolute top-0 left-0 w-32 h-12 hover:underline transition-all text-gray-500 '>Home</button>
-
-
+      <span>Signups temporarily unavailable</span>
+{/* 
       <Formik
         initialValues={{email: "", password: ""}}
         onSubmit={(values)=>{
@@ -51,7 +51,7 @@ const Signup = () => {
               <button type="submit" className='w-32 h-20 mb-8 mt-auto bg-gradient-to-r from-pink-500 to-orange-500 rounded-md text-white'>Sign Up</button>
           </Form>
         )}
-        </Formik> 
+        </Formik>  */}
     </div>
 )
 }
